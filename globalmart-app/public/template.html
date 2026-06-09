@@ -1,0 +1,603 @@
+<!DOCTYPE html><html class="scroll-smooth" lang="en" style="width: 1280px; height: 5692px; overflow: hidden; position: relative;"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Global Mart - Premier Global Marketplace</title>
+<meta content="Experience the future of global shopping with Global Mart. Discover millions of products with precision logistics and curated experiences." name="description">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary-fixed": "#00174b",
+                      "secondary-fixed": "#ffdbca",
+                      "on-secondary-fixed": "#341100",
+                      "on-tertiary-fixed": "#131b2e",
+                      "inverse-on-surface": "#eaf1ff",
+                      "on-tertiary-fixed-variant": "#3f465c",
+                      "outline": "#737686",
+                      "outline-variant": "#c3c6d7",
+                      "surface-container-lowest": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "on-surface-variant": "#434655",
+                      "surface-container-high": "#dce9ff",
+                      "on-surface": "#0b1c30",
+                      "tertiary-fixed": "#dae2fd",
+                      "surface-container-highest": "#d3e4fe",
+                      "tertiary": "#4d556b",
+                      "surface-dim": "#cbdbf5",
+                      "on-tertiary-container": "#eef0ff",
+                      "surface-tint": "#0053db",
+                      "surface-variant": "#d3e4fe",
+                      "on-primary-fixed-variant": "#003ea8",
+                      "inverse-primary": "#b4c5ff",
+                      "on-primary-container": "#eeefff",
+                      "inverse-surface": "#213145",
+                      "surface-container": "#e5eeff",
+                      "secondary-fixed-dim": "#ffb690",
+                      "error-container": "#ffdad6",
+                      "surface-container-low": "#eff4ff",
+                      "error": "#ba1a1a",
+                      "primary-container": "#2563eb",
+                      "on-background": "#0b1c30",
+                      "tertiary-fixed-dim": "#bec6e0",
+                      "primary-fixed": "#dbe1ff",
+                      "on-error": "#ffffff",
+                      "on-secondary-container": "#5c2400",
+                      "tertiary-container": "#656d84",
+                      "primary-fixed-dim": "#b4c5ff",
+                      "on-secondary": "#ffffff",
+                      "surface-bright": "#f8f9ff",
+                      "on-secondary-fixed-variant": "#783200",
+                      "secondary-container": "#fd761a",
+                      "on-primary": "#ffffff",
+                      "surface": "#f8f9ff",
+                      "background": "#f8f9ff",
+                      "secondary": "#9d4300",
+                      "on-tertiary": "#ffffff",
+                      "primary": "#004ac6"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "1.5rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-desktop": "64px",
+                      "lg": "48px",
+                      "margin-mobile": "20px",
+                      "sm": "12px",
+                      "xs": "4px",
+                      "md": "24px",
+                      "xl": "80px",
+                      "gutter": "24px",
+                      "base": "8px",
+                      "container-max": "1440px"
+              },
+              "fontFamily": {
+                      "label-sm": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "label-md": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "body-md": ["Inter"],
+                      "body-sm": ["Inter"],
+                      "headline-xl": ["Inter"],
+                      "display-lg-mobile": ["Inter"]
+              },
+              "fontSize": {
+                      "label-sm": ["12px", {"lineHeight": "14px", "letterSpacing": "0.03em", "fontWeight": "500"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-lg": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                      "label-md": ["14px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "headline-xl": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+        .dark .glass-card {
+            background: rgba(20, 30, 45, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .text-glow-primary {
+            text-shadow: 0 0 20px rgba(0, 83, 219, 0.3);
+        }
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md transition-colors duration-300">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/70 dark:bg-surface-dim/70 backdrop-blur-xl border-b border-white/20 dark:border-outline/20 shadow-[0px_10px_30px_rgba(0,0,0,0.05)]">
+<nav class="flex justify-between items-center h-20 px-margin-desktop max-w-container-max mx-auto">
+<div class="flex items-center gap-xs">
+<img alt="Global Mart Logo" class="h-10 w-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOaFnN1cU9DtRDGgTfjqHADPBLcJKehVHzw4eRfL4AQz3osRyFAHw_grbP9PupAXe5xEG56fC3yqV2GuoKOot_pDSQnlKfTIKMG9E9h7QO2XG2guat3DvVMBTGyXYLsWbed4VIcfadMLgQCI_NGiCAvBL8TpbiZoZt4d3i57IyOHkjo5LN-bjHpAQbnzLl73Hngbg75ttTID-red0_RbcPMa_gT0BzU0KZ7yI0CTciJFbTTFFzv-HY6G8-BzWjt3GqJ-yds58LFOs">
+<span class="font-headline-xl text-headline-xl font-extrabold text-primary dark:text-primary-fixed tracking-tight">Global Mart</span>
+</div>
+<div class="hidden md:flex gap-md items-center">
+<a class="text-primary dark:text-primary-fixed font-bold border-b-2 border-primary pb-1 font-label-md text-label-md" href="#">Home</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors font-label-md text-label-md" href="#">Products</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors font-label-md text-label-md" href="#">Categories</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors font-label-md text-label-md" href="#">Deals</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors font-label-md text-label-md" href="#">About</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors font-label-md text-label-md" href="#">Contact</a>
+</div>
+<div class="flex items-center gap-sm">
+<button class="p-2 material-symbols-outlined text-primary dark:text-primary-fixed-dim hover:bg-white/10 dark:hover:bg-black/10 rounded-lg transition-all duration-300">shopping_cart</button>
+<button class="p-2 material-symbols-outlined text-primary dark:text-primary-fixed-dim hover:bg-white/10 dark:hover:bg-black/10 rounded-lg transition-all duration-300">account_circle</button>
+<button class="p-2 material-symbols-outlined text-primary dark:text-primary-fixed-dim hover:bg-white/10 dark:hover:bg-black/10 rounded-lg transition-all duration-300" onclick="document.documentElement.classList.toggle('dark')">dark_mode</button>
+</div>
+</nav>
+</header>
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="relative h-[85vh] flex items-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img alt="Global Logistics Hero" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTCiYTlUELGFZZ0HYz6js3ZxBUyf3vciHMqhAMNGJ7EYLYHTZJhgngo09b149neQIMJ7y5twzM7xunONXjt7CzB0Dv8KQtAYEPTZPvi5JDWkbjjkG7T1W8bJV3eE-gAfXWd1fXUIllEeu-RJhSajpyBF656XSMKa0au-nya3sUd8jBB4dmE_5g4_BXIxdrKvSSOhbrc10ZeV3k6AwdEZ95SlGfPW1LBFvYZAAH39lsjICkYhY-qIouCB3xpfzqKwSrg5I35lPbI_o">
+<div class="absolute inset-0 bg-gradient-to-r from-background via-background/40 to-transparent"></div>
+</div>
+<div class="relative z-10 px-margin-desktop max-w-container-max mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-md">
+<div class="space-y-md animate-fade-in-up">
+
+
+<div class="flex flex-wrap gap-base pt-xs">
+
+
+</div>
+</div>
+</div>
+</section>
+<!-- Features Section -->
+<section class="py-xl px-margin-desktop max-w-container-max mx-auto">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<div class="glass-card p-md rounded-xl flex items-start gap-sm group hover:-translate-y-2 transition-transform duration-300 transition-all duration-700 opacity-100 translate-y-0">
+<span class="material-symbols-outlined text-primary text-3xl">public</span>
+<div>
+<h3 class="font-headline-md text-headline-md mb-xs">Worldwide Shipping</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Global reach in over 190+ countries.</p>
+</div>
+</div>
+<div class="glass-card p-md rounded-xl flex items-start gap-sm group hover:-translate-y-2 transition-transform duration-300 transition-all duration-700 opacity-100 translate-y-0">
+<span class="material-symbols-outlined text-primary text-3xl">verified_user</span>
+<div>
+<h3 class="font-headline-md text-headline-md mb-xs">Secure Payment</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Multi-layered encryption for every deal.</p>
+</div>
+</div>
+<div class="glass-card p-md rounded-xl flex items-start gap-sm group hover:-translate-y-2 transition-transform duration-300 transition-all duration-700 opacity-100 translate-y-0">
+<span class="material-symbols-outlined text-primary text-3xl">support_agent</span>
+<div>
+<h3 class="font-headline-md text-headline-md mb-xs">24/7 Support</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Round-the-clock help desk assistance.</p>
+</div>
+</div>
+<div class="glass-card p-md rounded-xl flex items-start gap-sm group hover:-translate-y-2 transition-transform duration-300 transition-all duration-700 opacity-100 translate-y-0">
+<span class="material-symbols-outlined text-primary text-3xl">sell</span>
+<div>
+<h3 class="font-headline-md text-headline-md mb-xs">Best Deals</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Guaranteed lowest prices worldwide.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Categories Grid -->
+<section class="py-xl bg-surface-container-low/50">
+<div class="px-margin-desktop max-w-container-max mx-auto">
+<h2 class="font-display-lg text-headline-xl mb-xl text-center">Browse Our <span class="text-primary">Premium Categories</span></h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-gutter">
+<!-- Category Cards -->
+<div class="relative group cursor-pointer overflow-hidden rounded-xl aspect-square glass-card flex flex-col items-center justify-center gap-sm transition-all duration-700 opacity-100 translate-y-0">
+<div class="skeleton absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity"></div>
+<span class="material-symbols-outlined text-primary text-5xl group-hover:scale-110 transition-transform">devices</span>
+<h4 class="font-label-md text-label-md">Electronics</h4>
+</div>
+<div class="relative group cursor-pointer overflow-hidden rounded-xl aspect-square glass-card flex flex-col items-center justify-center gap-sm transition-all duration-700 opacity-100 translate-y-0">
+<span class="material-symbols-outlined text-primary text-5xl group-hover:scale-110 transition-transform">apparel</span>
+<h4 class="font-label-md text-label-md">Fashion</h4>
+</div>
+<div class="relative group cursor-pointer overflow-hidden rounded-xl aspect-square glass-card flex flex-col items-center justify-center gap-sm transition-all duration-700 opacity-100 translate-y-0">
+<span class="material-symbols-outlined text-primary text-5xl group-hover:scale-110 transition-transform">home</span>
+<h4 class="font-label-md text-label-md">Home &amp; Living</h4>
+</div>
+<div class="relative group cursor-pointer overflow-hidden rounded-xl aspect-square glass-card flex flex-col items-center justify-center gap-sm transition-all duration-700 opacity-100 translate-y-0">
+<span class="material-symbols-outlined text-primary text-5xl group-hover:scale-110 transition-transform">face</span>
+<h4 class="font-label-md text-label-md">Beauty</h4>
+</div>
+<div class="relative group cursor-pointer overflow-hidden rounded-xl aspect-square glass-card flex flex-col items-center justify-center gap-sm transition-all duration-700 opacity-100 translate-y-0">
+<span class="material-symbols-outlined text-primary text-5xl group-hover:scale-110 transition-transform">sports_soccer</span>
+<h4 class="font-label-md text-label-md">Sports</h4>
+</div>
+<div class="relative group cursor-pointer overflow-hidden rounded-xl aspect-square glass-card flex flex-col items-center justify-center gap-sm transition-all duration-700 opacity-100 translate-y-0">
+<span class="material-symbols-outlined text-primary text-5xl group-hover:scale-110 transition-transform">menu_book</span>
+<h4 class="font-label-md text-label-md">Books</h4>
+</div>
+<div class="relative group cursor-pointer overflow-hidden rounded-xl aspect-square glass-card flex flex-col items-center justify-center gap-sm transition-all duration-700 opacity-100 translate-y-0">
+<span class="material-symbols-outlined text-primary text-5xl group-hover:scale-110 transition-transform">videogame_asset</span>
+<h4 class="font-label-md text-label-md">Gaming</h4>
+</div>
+<div class="relative group cursor-pointer overflow-hidden rounded-xl aspect-square glass-card flex flex-col items-center justify-center gap-sm transition-all duration-700 opacity-100 translate-y-0">
+<span class="material-symbols-outlined text-primary text-5xl group-hover:scale-110 transition-transform">watch</span>
+<h4 class="font-label-md text-label-md">Accessories</h4>
+</div>
+</div>
+</div>
+</section>
+<!-- Featured Products -->
+<section class="py-xl px-margin-desktop max-w-container-max mx-auto">
+<div class="flex justify-between items-end mb-xl">
+<div>
+<h2 class="font-headline-xl text-headline-xl">Curated <span class="text-primary">Global Picks</span></h2>
+<p class="text-on-surface-variant font-body-md">Hand-selected for quality and innovation.</p>
+</div>
+<button class="text-primary font-label-md border-b border-primary hover:border-primary-container transition-all">View All</button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Product Card 1 -->
+<div class="glass-card rounded-xl overflow-hidden flex flex-col group transition-all duration-700 opacity-100 translate-y-0">
+<div class="relative aspect-[4/5] overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Premium high-fidelity wireless noise-canceling headphones in a sleek matte charcoal finish. The headphones are professionally lit with soft blue and orange ambient glows, positioned in a minimalist studio environment with a subtle glassmorphic floor reflection. The mood is sophisticated and futuristic, aligning with a high-end electronics brand aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIntyMExHixiJCH2gqzKnEVkcLrLs8CUayp2EkHQY_NW9CrC2EbqGCy3whYZ-XJ21Cf6KHv1oojuxC5L-H9vCFvKYYlblzyGEb9DWdqFMemNkqE9yUmPH49plwcplNxSXZ37BUt0GakzhoiebvGZfXAj9UMrBNYCyW76JFsR6zHGW_QJbHE4FYcX_wtJckeW0r8wswGZ-yIF398e6EHfMDvgFBTQ6qUBPM-cIvGmwb3XKIXXEYowgQaL9XIVAQBU97zKuO66TASjs">
+<span class="absolute top-4 right-4 px-3 py-1 bg-secondary text-white font-label-sm rounded-full">15% OFF</span>
+</div>
+<div class="p-md space-y-xs">
+<span class="text-on-surface-variant font-label-sm uppercase tracking-wider">Electronics</span>
+<h4 class="font-headline-md text-headline-md">SonicFlow Ultra 500</h4>
+<div class="flex items-center gap-xs text-secondary-container">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm">star_half</span>
+<span class="text-on-surface-variant font-body-sm">(124)</span>
+</div>
+<div class="flex items-center justify-between pt-sm">
+<span class="font-headline-md text-primary">$299.00</span>
+<button class="p-2 bg-primary text-white rounded-full material-symbols-outlined hover:bg-primary-container transition-colors">shopping_cart</button>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="glass-card rounded-xl overflow-hidden flex flex-col group transition-all duration-700 opacity-100 translate-y-0">
+<div class="relative aspect-[4/5] overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A premium luxury minimalist wrist watch with a white face and tan leather strap. The product is shot in a high-key, airy studio setting with soft refractive light leaks passing through frosted glass elements. The overall aesthetic is clean, elegant, and timeless, perfectly representing a curated lifestyle collection in a modern marketplace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuANS-j5HwWmJEJFojGdSLFbDu7Z_e8cmCu56ERJz3dxcrd5NjuOkTP6BkgK4sFAKxA05deYkj1K0HaxiJxx3-67cp3cj5Gdg9-Wa9RyYuLyGE42C9qpEhnC2CV6iubKhiDv8VE5bSdBOP7EpuVoUUXP4pE2BEqVs45pvTcwtDfdN1cq05W9xYqhzYjsOWAQDrL2Oz7vfYlR41lXDVIzqyfHSjIlapkVLD_Yeq0je1nOKpI7110Ez7EoY1Gul7amKpZsQv4GMnBYJkE">
+<span class="absolute top-4 right-4 px-3 py-1 bg-secondary text-white font-label-sm rounded-full">15% OFF</span>
+</div>
+<div class="p-md space-y-xs">
+<span class="text-on-surface-variant font-label-sm uppercase tracking-wider">Accessories</span>
+<h4 class="font-headline-md text-headline-md">Heritage Timepiece</h4>
+<div class="flex items-center gap-xs text-secondary-container">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-on-surface-variant font-body-sm">(89)</span>
+</div>
+<div class="flex items-center justify-between pt-sm">
+<span class="font-headline-md text-primary">$185.00</span>
+<button class="p-2 bg-primary text-white rounded-full material-symbols-outlined hover:bg-primary-container transition-colors">shopping_cart</button>
+</div>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="glass-card rounded-xl overflow-hidden flex flex-col group transition-all duration-700 opacity-100 translate-y-0">
+<div class="relative aspect-[4/5] overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Vibrant red high-performance athletic sneakers floating in a dark, atmospheric space with electric blue neon highlights. The shoes feature intricate mesh textures and a futuristic sole design. The lighting is dramatic and cinematic, emphasizing the precision engineering and speed of the sports footwear line." src="https://lh3.googleusercontent.com/aida-public/AB6AXuARTMRANhKooX97mnhhbCX3o1ZBa0FvvLVJN0kkGFwj_YdfIfNwIXg1907EvnuGrEdSggGDFC8QbF2Vi79dDrcBsZr1i1pBf9zH__PxEZqcSb2tqYk_mLumIp5xSn53c_Mj6mUlL9up9Jf6RZq73cSwfJ4DHu5BfFrE099-n_UCecEmofR7oCt5tUyNdmHmeC5aQtPHLjKwIoNpU8LzTt8YC5jy0zoIXY_8OGMbfjWSEwW0pCuN4q8sPRUwzypskStsBD6n1dhJWuE">
+<span class="absolute top-4 right-4 px-3 py-1 bg-secondary text-white font-label-sm rounded-full">15% OFF</span>
+</div>
+<div class="p-md space-y-xs">
+<span class="text-on-surface-variant font-label-sm uppercase tracking-wider">Sports</span>
+<h4 class="font-headline-md text-headline-md">Apex Velocity Runner</h4>
+<div class="flex items-center gap-xs text-secondary-container">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm">star_border</span>
+<span class="text-on-surface-variant font-body-sm">(210)</span>
+</div>
+<div class="flex items-center justify-between pt-sm">
+<span class="font-headline-md text-primary">$120.00</span>
+<button class="p-2 bg-primary text-white rounded-full material-symbols-outlined hover:bg-primary-container transition-colors">shopping_cart</button>
+</div>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="glass-card rounded-xl overflow-hidden flex flex-col group transition-all duration-700 opacity-100 translate-y-0">
+<div class="relative aspect-[4/5] overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A vintage-inspired professional DSLR camera with a high-end lens, presented in a minimalist light-mode setting with soft shadows. The scene is bright and professional, with subtle reflections on the camera body. This visual represents the precision and premium selection available in the gaming and photography segments." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFw_ktm4sgT4H1yw9ghvziimCyRE_Kak02uxmtLoZeAH5hmzgJIZPq2XkCrJbBmYKAWm6dCY18-zBAWnNxzRQ4hK27FuTcvEW_c8w6OWRlXCoPYqkAOZcVcq86LtNyQ7PE2VSWkHIwZdXTbFfl6912HX0ix0s_y_sfma88DvA1cxsCLDlH7nqwbG3UIOgP284vtxroY4oW3_3bGUTXBn9deoiAa9w8Qp1mlQI7LVBEY6HVZrpcktwBc5Ovxh2AgVrP3hvVInrh_Iw">
+<span class="absolute top-4 right-4 px-3 py-1 bg-secondary text-white font-label-sm rounded-full">15% OFF</span>
+</div>
+<div class="p-md space-y-xs">
+<span class="text-on-surface-variant font-label-sm uppercase tracking-wider">Photography</span>
+<h4 class="font-headline-md text-headline-md">Lumix X-Series Pro</h4>
+<div class="flex items-center gap-xs text-secondary-container">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-on-surface-variant font-body-sm">(56)</span>
+</div>
+<div class="flex items-center justify-between pt-sm">
+<span class="font-headline-md text-primary">$1,249.00</span>
+<button class="p-2 bg-primary text-white rounded-full material-symbols-outlined hover:bg-primary-container transition-colors">shopping_cart</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Promotional Banner -->
+<section class="py-xl px-margin-desktop">
+<div class="max-w-container-max mx-auto rounded-3xl overflow-hidden relative min-h-[400px] flex items-center bg-primary-container">
+<div class="absolute inset-0 bg-gradient-to-r from-primary to-secondary-container mix-blend-multiply opacity-80"></div>
+<div class="absolute inset-0">
+<img class="w-full h-full object-cover" data-alt="A celebratory shopping atmosphere with vibrant orange and blue lighting effects. Floating shopping bags and abstract geometric patterns create a sense of dynamic movement and excitement. The style is modern, energetic, and promotional, perfect for a high-impact flash sale announcement." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcNhEHh0qdqvjZr8clM0DG4vgmiRmocK7sv_bv7SiVoAQJuaQWb-JNVNW9sJVHkM-DnYzJ_Q68kfufVDYwzwuxpVpIAR5szlYRcrpOkaHZo7_WCbBrh1jXPP6KHj-eAF7rImK4ncqbVhuGVhsmPG10gM39XBTJdv3KnPMW5c-qHu5JGvOVNpI7pFhgxIiKra3ewnBvhN5X4Is1VFUOyp7iceTF6NpLK0ba-feOQwOg5HVkrchrKBZrDn_MpJEr3soI5ur5wF-GPLw">
+</div>
+<div class="relative z-10 p-xl flex flex-col md:flex-row items-center justify-between w-full gap-xl">
+<div class="text-white max-w-xl">
+<span class="px-4 py-2 bg-white/20 backdrop-blur-md rounded-full font-label-md mb-md inline-block">Exclusive Offer</span>
+<h2 class="font-display-lg text-display-lg mb-sm">Flash Sale - Up to 70% Off</h2>
+<p class="font-body-lg text-body-lg opacity-90">Grab the most coveted items from across the globe at unprecedented prices. Limited time only.</p>
+<button class="mt-md px-xl py-md bg-white text-primary font-bold rounded-full hover:scale-105 transition-transform">Claim My Discount</button>
+</div>
+<div class="glass-card p-xl rounded-2xl flex flex-col items-center gap-sm min-w-[300px] transition-all duration-700 opacity-100 translate-y-0">
+<p class="font-label-md text-white uppercase tracking-widest opacity-80">Ending In</p>
+<div class="flex gap-md font-display-lg text-white" id="countdown">
+<div class="flex flex-col items-center">
+<span class="text-4xl font-extrabold" id="hours">08</span>
+<span class="text-xs uppercase">Hrs</span>
+</div>
+<span class="text-4xl font-extrabold">:</span>
+<div class="flex flex-col items-center">
+<span class="text-4xl font-extrabold" id="minutes">43</span>
+<span class="text-xs uppercase">Min</span>
+</div>
+<span class="text-4xl font-extrabold">:</span>
+<div class="flex flex-col items-center">
+<span class="text-4xl font-extrabold" id="seconds">43</span>
+<span class="text-xs uppercase">Sec</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Why Choose Us -->
+<section class="py-xl px-margin-desktop max-w-container-max mx-auto text-center">
+<h2 class="font-headline-xl text-headline-xl mb-xl">The <span class="text-primary">Global Mart Advantage</span></h2>
+<div class="grid grid-cols-2 md:grid-cols-5 gap-md">
+<div class="space-y-sm">
+<div class="w-16 h-16 mx-auto bg-primary-container/10 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl">verified</span>
+</div>
+<h5 class="font-label-md">100% Authentic</h5>
+</div>
+<div class="space-y-sm">
+<div class="w-16 h-16 mx-auto bg-primary-container/10 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl">storefront</span>
+</div>
+<h5 class="font-label-md">Verified Sellers</h5>
+</div>
+<div class="space-y-sm">
+<div class="w-16 h-16 mx-auto bg-primary-container/10 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl">local_shipping</span>
+</div>
+<h5 class="font-label-md">Express Delivery</h5>
+</div>
+<div class="space-y-sm">
+<div class="w-16 h-16 mx-auto bg-primary-container/10 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl">policy</span>
+</div>
+<h5 class="font-label-md">Buyer Protection</h5>
+</div>
+<div class="space-y-sm">
+<div class="w-16 h-16 mx-auto bg-primary-container/10 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl">assignment_return</span>
+</div>
+<h5 class="font-label-md">Easy Returns</h5>
+</div>
+</div>
+</section>
+<!-- Testimonials -->
+<section class="py-xl bg-surface-container-low/30">
+<div class="px-margin-desktop max-w-container-max mx-auto">
+<h2 class="font-headline-xl text-headline-xl mb-xl text-center">What Our <span class="text-primary">Global Community</span> Says</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="glass-card p-xl rounded-2xl flex flex-col gap-md transition-all duration-700 opacity-100 translate-y-0">
+<div class="flex text-secondary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-body-md italic text-on-surface-variant">"The seamless experience of ordering electronics from Tokyo to London was incredible. The delivery was faster than local shipping!"</p>
+<div class="flex items-center gap-sm mt-auto">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-container">
+<img alt="Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-H4Oxov3kMhew0wFmVVTaFVXwNhbF5QJgLB5ZfbC4tbzHXqGoMEK2Ql3t8sJqrqDwH-Ha8LhcfjJ3WyFHOLbmz7MVxIpbpI2z6tM5-y2C3_Hchu6Z_3rM356x5sN83MkaesReRtdm0gnY5Ml7focJqcSfOMGp1eDMn7hxTy7s8Hj234GBfAy_WBU7UkSWNx1m7JPRSpHIMeuNWAe5aZSEKDYfUFNZEFAoajlKSIJHdkoe5xkyknMeViihBmz367Vvc_LqeTnCJcw">
+</div>
+<div>
+<h6 class="font-label-md">Sarah Jenkins</h6>
+<p class="text-xs text-on-surface-variant">London, UK</p>
+</div>
+</div>
+</div>
+<div class="glass-card p-xl rounded-2xl flex flex-col gap-md border-primary/20 bg-primary/5 scale-105 transition-all duration-700 opacity-100 translate-y-0">
+<div class="flex text-secondary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-body-md italic text-on-surface-variant">"I found designer pieces that weren't available in my country. Global Mart's curation is top-notch and truly sophisticated."</p>
+<div class="flex items-center gap-sm mt-auto">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-container">
+<img alt="Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDl27yG0UWex10Y70BkI_arw9p17fEMn1-l8V2Hsr6h7TRXjNBrQqk13ykwcdab7jQY5OxQQOxDX_o8lFMfuc48QCwXBT3_vzwY6b7NJ7BQGBLbUrArhP26OSWPB-s_Sro7MxrNdNXdfvs_v_yJ5gd7rH1NPO14P9ITy-Qfm_YTjgKE7QcZEykVNe5lI4nrZbQ3YGRQ2H2PU-7P43GCTI0QXs7JuAnzYa9J2v3LtRKRvboCZ_26hfGZYtK58VcZYWRCGKW9D0hQA3A">
+</div>
+<div>
+<h6 class="font-label-md">Marcello Rossi</h6>
+<p class="text-xs text-on-surface-variant">Milan, Italy</p>
+</div>
+</div>
+</div>
+<div class="glass-card p-xl rounded-2xl flex flex-col gap-md transition-all duration-700 opacity-100 translate-y-0">
+<div class="flex text-secondary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="font-body-md italic text-on-surface-variant">"The buyer protection gives me so much peace of mind. Every transaction is handled with absolute professionalism."</p>
+<div class="flex items-center gap-sm mt-auto">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-container">
+<img alt="Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnI8ioxUlfd-Bh2X1lX4ACYihY9bviDSvudKZEffc1cF69NPWtzwd9pffKoQFTq5wy5uty8idRwf_X3vtVHAZ7CytHhx0UfXtQxoiPlham4-lcb-1ucWg966icSMDBwiM2XXs3qrrnsXBJSxP4o75D41-7DcBM5FL3t6158lY7GbzAGMmGqE8pM4M-ngdDfVWJVXvAH47HrGr5hxd5eWIHQ84il-qHBfK9eeiRrd2gmifD8jUqYHKQkp9ZXDb6x7D2PbfI4kDlsOw">
+</div>
+<div>
+<h6 class="font-label-md">Aiko Tanaka</h6>
+<p class="text-xs text-on-surface-variant">Tokyo, Japan</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Newsletter -->
+<section class="py-xl px-margin-desktop">
+<div class="max-w-4xl mx-auto glass-card p-xl rounded-3xl text-center space-y-md border-2 border-primary/10 transition-all duration-700 opacity-100 translate-y-0">
+<h2 class="font-headline-xl text-headline-xl">Join the <span class="text-primary">Inner Circle</span></h2>
+<p class="font-body-lg text-on-surface-variant">Get early access to global launches, exclusive deals, and curated shopping guides.</p>
+<div class="flex flex-col sm:flex-row gap-base max-w-xl mx-auto pt-sm">
+<input class="flex-1 px-md py-md rounded-full bg-white/50 dark:bg-black/20 border-outline/20 focus:border-primary focus:ring-primary outline-none transition-all" placeholder="Your global email address" type="email">
+<button class="px-xl py-md bg-primary text-white font-bold rounded-full hover:bg-primary-container transition-colors shadow-lg">Subscribe</button>
+</div>
+<p class="text-[10px] text-on-surface-variant opacity-60">By subscribing, you agree to our Terms of Service and Privacy Policy.</p>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-surface-dim w-full py-xl border-t border-outline-variant/30">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-lg px-margin-desktop max-w-container-max mx-auto">
+<div class="space-y-md">
+<div class="flex items-center gap-xs">
+<img alt="Logo" class="h-8" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOaFnN1cU9DtRDGgTfjqHADPBLcJKehVHzw4eRfL4AQz3osRyFAHw_grbP9PupAXe5xEG56fC3yqV2GuoKOot_pDSQnlKfTIKMG9E9h7QO2XG2guat3DvVMBTGyXYLsWbed4VIcfadMLgQCI_NGiCAvBL8TpbiZoZt4d3i57IyOHkjo5LN-bjHpAQbnzLl73Hngbg75ttTID-red0_RbcPMa_gT0BzU0KZ7yI0CTciJFbTTFFzv-HY6G8-BzWjt3GqJ-yds58LFOs">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">Global Mart</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Precision Logistics &amp; Curated Shopping for the modern international citizen.</p>
+<div class="flex gap-sm">
+<a class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center hover:bg-primary hover:text-white transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-sm">face_nod</span>
+</a>
+<a class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center hover:bg-primary hover:text-white transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-sm">language</span>
+</a>
+</div>
+</div>
+<div class="space-y-sm">
+<h6 class="font-label-md text-label-md uppercase tracking-widest text-primary">Company</h6>
+<ul class="space-y-xs">
+<li class=""><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary dark:hover:text-secondary-fixed transition-transform duration-200 inline-block hover:translate-x-1" href="#">About Us</a></li>
+<li class=""><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary dark:hover:text-secondary-fixed transition-transform duration-200 inline-block hover:translate-x-1" href="#">Careers</a></li>
+<li class=""><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary dark:hover:text-secondary-fixed transition-transform duration-200 inline-block hover:translate-x-1" href="#">Partners</a></li>
+<li class=""><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary dark:hover:text-secondary-fixed transition-transform duration-200 inline-block hover:translate-x-1" href="#">Press</a></li>
+</ul>
+</div>
+<div class="space-y-sm">
+<h6 class="font-label-md text-label-md uppercase tracking-widest text-primary">Categories</h6>
+<ul class="space-y-xs">
+<li class=""><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary dark:hover:text-secondary-fixed transition-transform duration-200 inline-block hover:translate-x-1" href="#">Electronics</a></li>
+<li class=""><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary dark:hover:text-secondary-fixed transition-transform duration-200 inline-block hover:translate-x-1" href="#">Fashion</a></li>
+<li class=""><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary dark:hover:text-secondary-fixed transition-transform duration-200 inline-block hover:translate-x-1" href="#">Gaming</a></li>
+<li class=""><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary dark:hover:text-secondary-fixed transition-transform duration-200 inline-block hover:translate-x-1" href="#">Home &amp; Living</a></li>
+</ul>
+</div>
+<div class="space-y-sm">
+<h6 class="font-label-md text-label-md uppercase tracking-widest text-primary">Support</h6>
+<ul class="space-y-xs">
+<li class=""><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary dark:hover:text-secondary-fixed transition-transform duration-200 inline-block hover:translate-x-1" href="#">Help Center</a></li>
+<li class=""><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary dark:hover:text-secondary-fixed transition-transform duration-200 inline-block hover:translate-x-1" href="#">Privacy Policy</a></li>
+<li class=""><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary dark:hover:text-secondary-fixed transition-transform duration-200 inline-block hover:translate-x-1" href="#">Terms of Service</a></li>
+<li class=""><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary dark:hover:text-secondary-fixed transition-transform duration-200 inline-block hover:translate-x-1" href="#">Cookie Settings</a></li>
+</ul>
+</div>
+</div>
+<div class="mt-xl pt-md border-t border-outline-variant/10 text-center">
+<p class="font-label-md text-label-md text-on-surface-variant opacity-60">© 2024 Global Mart. Precision Logistics &amp; Curated Shopping.</p>
+</div>
+</footer>
+<script>
+        // Countdown Timer Logic
+        function updateCountdown() {
+            const hoursEl = document.getElementById('hours');
+            const minutesEl = document.getElementById('minutes');
+            const secondsEl = document.getElementById('seconds');
+
+            let h = parseInt(hoursEl.innerText);
+            let m = parseInt(minutesEl.innerText);
+            let s = parseInt(secondsEl.innerText);
+
+            s--;
+            if (s < 0) {
+                s = 59;
+                m--;
+                if (m < 0) {
+                    m = 59;
+                    h--;
+                }
+            }
+
+            hoursEl.innerText = h.toString().padStart(2, '0');
+            minutesEl.innerText = m.toString().padStart(2, '0');
+            secondsEl.innerText = s.toString().padStart(2, '0');
+        }
+        setInterval(updateCountdown, 1000);
+
+        // Simple Reveal Animation
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-8');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.glass-card').forEach(el => {
+            el.classList.add('opacity-0', 'translate-y-8', 'transition-all', 'duration-700');
+            observer.observe(el);
+        });
+    </script>
+
+
+</body></html>
