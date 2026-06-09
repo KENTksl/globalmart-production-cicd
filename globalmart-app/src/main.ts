@@ -11,6 +11,20 @@ import { renderRegisterPage } from './pages/RegisterPage';
 const app = document.querySelector<HTMLDivElement>('#app')!;
 const router = new Navigo('/');
 
+// Function to parse query params
+function parseQueryParams(queryString: string): Record<string, string> {
+  const params: Record<string, string> = {};
+  if (!queryString) return params;
+  const pairs = queryString.split('&');
+  for (const pair of pairs) {
+    const [key, value] = pair.split('=');
+    if (key) {
+      params[decodeURIComponent(key)] = value ? decodeURIComponent(value) : '';
+    }
+  }
+  return params;
+}
+
 // Render navbar
 const navbarContainer = document.createElement('div');
 document.body.insertBefore(navbarContainer, app);
@@ -25,9 +39,10 @@ router.on('/categories', () => {
   renderCategoriesPage(app);
 });
 
-router.on('/products', () => {
+router.on('/products', (match) => {
   renderNavbar(navbarContainer);
-  renderProductsPage(app);
+  const queryParams = parseQueryParams(match?.queryString || '');
+  renderProductsPage(app, queryParams);
 });
 
 router.on('/products/:id', (match) => {
@@ -54,7 +69,8 @@ document.body.addEventListener('click', (e) => {
     link.hasAttribute('data-nav') ||
     link.classList.contains('btn') ||
     link.classList.contains('logo-link') ||
-    link.classList.contains('product-card');
+    link.classList.contains('product-card') ||
+    link.classList.contains('category-card');
   if (!shouldHandle) return;
   const href = link.getAttribute('href');
   if (!href) return;

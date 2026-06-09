@@ -1,0 +1,17 @@
+{
+  "name": "globalmart-production-cicd",
+  "version": "1.0.0",
+  "description": "GlobalMart e-commerce project with backend and frontend",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd globalmart-api && mvnw.cmd spring-boot:run",
+    "dev:frontend": "cd globalmart-app && npm run dev",
+    "install:all": "npm install && cd globalmart-app && npm install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}

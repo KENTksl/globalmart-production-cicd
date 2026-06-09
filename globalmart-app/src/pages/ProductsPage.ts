@@ -4,10 +4,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export async function renderProductsPage(container: HTMLElement) {
+export async function renderProductsPage(container: HTMLElement, queryParams: Record<string, string> = {}) {
   container.innerHTML = `
     <section class="section">
-      <h2 class="section-title">Sản phẩm nổi bật</h2>
+      <h2 class="section-title">${queryParams.category ? 'Sản phẩm theo danh mục' : 'Sản phẩm nổi bật'}</h2>
       <div id="products-container" class="products">
         <p style="text-align: center; width: 100%;">Đang tải sản phẩm...</p>
       </div>
@@ -22,7 +22,12 @@ export async function renderProductsPage(container: HTMLElement) {
   const productsContainer = document.getElementById('products-container')!;
   
   try {
-    const products = await api.getProducts();
+    let products: Product[];
+    if (queryParams.category) {
+      products = await api.getProductsByCategory(queryParams.category);
+    } else {
+      products = await api.getProducts();
+    }
     renderProducts(productsContainer, products);
   } catch (error) {
     productsContainer.innerHTML = `
@@ -34,14 +39,24 @@ export async function renderProductsPage(container: HTMLElement) {
 }
 
 function renderProducts(container: HTMLElement, products: Product[]) {
+  if (products.length === 0) {
+    container.innerHTML = `
+      <p style="text-align: center; width: 100%;">Chưa có sản phẩm nào.</p>
+    `;
+    return;
+  }
   container.innerHTML = products.map(product => renderProductCard(product)).join('');
   animateProductCards();
 }
 
 function renderProductCard(product: Product): string {
+  const productImage = product.image 
+    ? `<img src="${product.image}" alt="${product.name}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;">` 
+    : '<div style="width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; font-size: 48px;">📦</div>';
+
   return `
-    <a href="/products/${product.id}" class="product-card" style="text-decoration: none; color: inherit;">
-      <div class="product-image">📦</div>
+    <a href="/products/${product.numericId}" class="product-card" style="text-decoration: none; color: inherit;">
+      <div class="product-image">${productImage}</div>
       <div class="product-info">
         <h3 class="product-name">${product.name}</h3>
         <p class="product-price">${product.price.toLocaleString('vi-VN')}đ</p>

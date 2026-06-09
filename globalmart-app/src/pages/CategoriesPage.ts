@@ -1,9 +1,16 @@
+import { api, Category } from '../utils/api';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export function renderCategoriesPage(container: HTMLElement) {
+const categoryIcons: Record<string, string> = {
+  'Điện tử': '💻',
+  'Thời trang': '🧥',
+  'Thực phẩm': '🍔'
+};
+
+export async function renderCategoriesPage(container: HTMLElement) {
   container.innerHTML = `
     <section class="section home-section">
       <div class="container container--narrow">
@@ -17,15 +24,8 @@ export function renderCategoriesPage(container: HTMLElement) {
 
     <section class="section home-section home-section--soft">
       <div class="container">
-        <div class="category-grid">
-          <div class="glass-card category-card"><span>💻</span><h4>Điện tử</h4></div>
-          <div class="glass-card category-card"><span>🧥</span><h4>Thời trang</h4></div>
-          <div class="glass-card category-card"><span>🏠</span><h4>Nhà cửa</h4></div>
-          <div class="glass-card category-card"><span>💄</span><h4>Làm đẹp</h4></div>
-          <div class="glass-card category-card"><span>⚽</span><h4>Thể thao</h4></div>
-          <div class="glass-card category-card"><span>📚</span><h4>Sách</h4></div>
-          <div class="glass-card category-card"><span>🎮</span><h4>Gaming</h4></div>
-          <div class="glass-card category-card"><span>⌚</span><h4>Phụ kiện</h4></div>
+        <div id="categories-container" class="category-grid">
+          <p style="text-align: center; width: 100%;">Đang tải danh mục...</p>
         </div>
       </div>
     </section>
@@ -71,6 +71,35 @@ export function renderCategoriesPage(container: HTMLElement) {
     </footer>
   `;
 
+  const categoriesContainer = document.getElementById('categories-container')!;
+  
+  try {
+    const categories = await api.getCategories();
+    renderCategories(categoriesContainer, categories);
+  } catch (error) {
+    categoriesContainer.innerHTML = `
+      <div class="alert alert-error">
+        Không thể tải danh mục. Vui lòng thử lại sau.
+      </div>
+    `;
+  }
+}
+
+function renderCategories(container: HTMLElement, categories: Category[]) {
+  container.innerHTML = categories.map(category => {
+    const icon = categoryIcons[category.name] || '📦';
+    return `
+      <a href="/products?category=${category._id}" class="glass-card category-card" data-nav style="text-decoration: none; color: inherit;">
+        <span>${icon}</span>
+        <h4>${category.name}</h4>
+      </a>
+    `;
+  }).join('');
+  
+  animateCategoryCards();
+}
+
+function animateCategoryCards() {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduceMotion) return;
 
