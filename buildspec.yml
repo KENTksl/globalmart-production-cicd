@@ -1,0 +1,38 @@
+version: 0.2
+
+env:
+  variables:
+    AWS_REGION: "ap-southeast-1"
+    ECR_FRONTEND: "878311411295.dkr.ecr.ap-southeast-1.amazonaws.com/globalmart/frontend"
+    ECR_BACKEND: "878311411295.dkr.ecr.ap-southeast-1.amazonaws.com/globalmart/backend"
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $(echo $ECR_FRONTEND | cut -d'/' -f1)
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
+
+  build:
+    commands:
+      - echo Building the Frontend Docker image...
+      - docker build -t $ECR_FRONTEND:$IMAGE_TAG ./globalmart-app
+      - echo Building the Backend Docker image...
+      - docker build -t $ECR_BACKEND:$IMAGE_TAG ./globalmart-api
+
+  post_build:
+    commands:
+      - echo Pushing the Docker images to ECR...
+      - docker push $ECR_FRONTEND:$IMAGE_TAG
+      - docker push $ECR_BACKEND:$IMAGE_TAG
+      
+      - echo Preparing deployment artifacts...
+      # Tạo file imagedefinitions.json cho cả frontend và backend
+      - printf '[{"name":"frontend","imageUri":"%s"},{"name":"backend","imageUri":"%s"}]' $ECR_FRONTEND:$IMAGE_TAG $ECR_BACKEND:$IMAGE_TAG > imagedefinitions.json
+
+artifacts:
+  files:
+    - 'imagedefinitions.json'
+    - 'appspec.yml'
+    - 'taskdef.json'
