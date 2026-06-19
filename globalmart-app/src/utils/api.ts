@@ -1,25 +1,24 @@
 const API_BASE_URL = 'http://localhost:8080';
 
-
 export interface Product {
   id: number;
   name: string;
   description: string;
   price: number;
-  image?: string;
-  categoryId?: string | number;
+  image: string;
+  categoryId: number;
+  categoryName?: string;
 }
 
 export interface Category {
-  id: string;
-  numericId: number;
+  id: number;
   name: string;
   description: string;
+  productCount?: number;
 }
 
 export interface User {
-  _id?: string;
-  numericId: number;
+  id: number;
   username: string;
   email: string;
 }
@@ -35,80 +34,226 @@ export interface LoginData {
   password: string;
 }
 
+export interface ProductPayload {
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+  categoryId: number;
+}
+
+export interface CategoryPayload {
+  name: string;
+  description: string;
+}
+
+export interface CheckoutPayload {
+  customerName: string;
+  email: string;
+  phone: string;
+  address: string;
+  notes?: string;
+  items: Array<{
+    productId: number;
+    quantity: number;
+  }>;
+}
+
+export interface AdminChartDatum {
+  label: string;
+  value: number;
+}
+
+export interface AdminOrderSummary {
+  id: number;
+  customerName: string;
+  totalAmount: number;
+  status: string;
+  createdAt: string;
+}
+
+export interface AdminStats {
+  totalProducts: number;
+  totalCategories: number;
+  totalOrders: number;
+  totalRevenue: number;
+  productsPerCategory: AdminChartDatum[];
+  orderStatusBreakdown: AdminChartDatum[];
+  latestOrders: AdminOrderSummary[];
+}
+
 function normalizeProduct(raw: any): Product {
   return {
-    id: Number(raw.numericId ?? raw.id),
-    name: raw.name ?? '',
-    description: raw.description ?? '',
+    id: Number(raw.id ?? 0),
+    name: String(raw.name ?? ''),
+    description: String(raw.description ?? ''),
     price: Number(raw.price ?? 0),
-    image: raw.image ?? '',
-    categoryId: raw.categoryId,
+    image: String(raw.image ?? ''),
+    categoryId: Number(raw.categoryId ?? 0),
+    categoryName: raw.categoryName ? String(raw.categoryName) : undefined,
   };
 }
 
 function normalizeCategory(raw: any): Category {
   return {
-    id: String(raw.id ?? raw._id ?? ''),
-    numericId: Number(raw.numericId ?? 0),
-    name: raw.name ?? '',
-    description: raw.description ?? '',
+    id: Number(raw.id ?? 0),
+    name: String(raw.name ?? ''),
+    description: String(raw.description ?? ''),
+    productCount: raw.productCount !== undefined ? Number(raw.productCount) : undefined,
   };
+}
+
+function normalizeUser(raw: any): User {
+  return {
+    id: Number(raw.id ?? raw.numericId ?? 0),
+    username: String(raw.username ?? ''),
+    email: String(raw.email ?? ''),
+  };
+}
+
+function getToken() {
+  return localStorage.getItem('token');
+}
+
+async function request<T>(path: string, init: RequestInit = {}, requiresAuth = false): Promise<T> {
+  const headers = new Headers(init.headers || {});
+  if (!headers.has('Content-Type') && init.body) {
+    headers.set('Content-Type', 'application/json');
+  }
+
+  if (requiresAuth) {
+    const token = getToken();
+    if (!token) {
+      throw new Error('Unauthorized');
+    }
+    headers.set('Authorization', `Bearer ${token}`);
+  }
+
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    ...init,
+    headers,
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(text || `Request failed with status ${response.status}`);
+  }
+
+  if (response.status === 204) {
+    return undefined as T;
+  }
+
+  return response.json() as Promise<T>;
 }
 
 export const api = {
   async getProducts(): Promise<Product[]> {
-    const response = await fetch(`${API_BASE_URL}/products`);
-    if (!response.ok) throw new Error('Failed to fetch products');
-    const data = await response.json();
+    const data = await request<any[]>('/products');
     return data.map(normalizeProduct);
   },
 
   async getProduct(id: number): Promise<Product> {
-    const response = await fetch(`${API_BASE_URL}/products/${id}`);
-    if (!response.ok) throw new Error('Failed to fetch product');
-    const data = await response.json();
+    const data = await request<any>(`/products/${id}`);
     return normalizeProduct(data);
   },
 
+  async createProduct(payload: ProductPayload): Promise<Product> {
+    const data = await request<any>(
+      '/products',
+      {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      },
+      true
+    );
+    return normalizeProduct(data);
+  },
+
+  async updateProduct(id: number, payload: ProductPayload): Promise<Product> {
+    const data = await request<any>(
+      `/products/${id}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(payload),
+      },
+      true
+    );
+    return normalizeProduct(data);
+  },
+
+  async deleteProduct(id: number): Promise<void> {
+    await request<void>(`/products/${id}`, { method: 'DELETE' }, true);
+  },
+
   async getCategories(): Promise<Category[]> {
-    const response = await fetch(`${API_BASE_URL}/categories`);
-    if (!response.ok) throw new Error('Failed to fetch categories');
-    const data = await response.json();
+    const data = await request<any[]>('/categories');
     return data.map(normalizeCategory);
   },
 
-  async getProductsByCategory(categoryId: string): Promise<Product[]> {
-    const response = await fetch(`${API_BASE_URL}/categories/${categoryId}/products`);
-    if (!response.ok) throw new Error('Failed to fetch products');
-    const data = await response.json();
+  async getCategory(id: number): Promise<Category> {
+    const data = await request<any>(`/categories/${id}`);
+    return normalizeCategory(data);
+  },
+
+  async createCategory(payload: CategoryPayload): Promise<Category> {
+    const data = await request<any>(
+      '/categories',
+      {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      },
+      true
+    );
+    return normalizeCategory(data);
+  },
+
+  async updateCategory(id: number, payload: CategoryPayload): Promise<Category> {
+    const data = await request<any>(
+      `/categories/${id}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(payload),
+      },
+      true
+    );
+    return normalizeCategory(data);
+  },
+
+  async deleteCategory(id: number): Promise<void> {
+    await request<void>(`/categories/${id}`, { method: 'DELETE' }, true);
+  },
+
+  async getProductsByCategory(categoryId: string | number): Promise<Product[]> {
+    const data = await request<any[]>(`/categories/${categoryId}/products`);
     return data.map(normalizeProduct);
   },
 
-  async register(data: RegisterData): Promise<User> {
-    const response = await fetch(`${API_BASE_URL}/auth/register`, {
+  async register(data: RegisterData): Promise<{ token: string; user: User }> {
+    const result = await request<any>('/auth/register', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify(data),
     });
-    if (!response.ok) throw new Error('Registration failed');
-    return response.json();
+    const payload = {
+      token: String(result.token ?? ''),
+      user: normalizeUser(result.user ?? {}),
+    };
+    localStorage.setItem('token', payload.token);
+    localStorage.setItem('user', JSON.stringify(payload.user));
+    return payload;
   },
 
   async login(data: LoginData): Promise<{ token: string; user: User }> {
-    const response = await fetch(`${API_BASE_URL}/auth/login`, {
+    const result = await request<any>('/auth/login', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify(data),
     });
-    if (!response.ok) throw new Error('Login failed');
-    const result = await response.json();
-    localStorage.setItem('token', result.token);
-    localStorage.setItem('user', JSON.stringify(result.user));
-    return result;
+    const payload = {
+      token: String(result.token ?? ''),
+      user: normalizeUser(result.user ?? {}),
+    };
+    localStorage.setItem('token', payload.token);
+    localStorage.setItem('user', JSON.stringify(payload.user));
+    return payload;
   },
 
   logout() {
@@ -118,6 +263,25 @@ export const api = {
 
   getCurrentUser(): User | null {
     const userStr = localStorage.getItem('user');
-    return userStr ? JSON.parse(userStr) : null;
+    return userStr ? normalizeUser(JSON.parse(userStr)) : null;
+  },
+
+  isAuthenticated(): boolean {
+    return Boolean(getToken() && this.getCurrentUser());
+  },
+
+  async getAdminStats(): Promise<AdminStats> {
+    return request<AdminStats>('/admin/stats', {}, true);
+  },
+
+  async checkout(payload: CheckoutPayload) {
+    const currentUser = this.getCurrentUser();
+    return request('/orders/checkout', {
+      method: 'POST',
+      body: JSON.stringify({
+        ...payload,
+        userId: currentUser?.id ?? 0,
+      }),
+    });
   },
 };
