@@ -20,9 +20,10 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        // Clear existing data (for demo purposes)
-        productRepository.deleteAll();
-        categoryRepository.deleteAll();
+        if (productRepository.count() > 0 || categoryRepository.count() > 0) {
+            System.out.println("Database already contains data. Skip sample initialization.");
+            return;
+        }
 
         AtomicLong categoryIdCounter = new AtomicLong(1);
         AtomicLong productIdCounter = new AtomicLong(1);

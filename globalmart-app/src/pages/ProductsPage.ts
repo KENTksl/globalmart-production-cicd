@@ -55,7 +55,7 @@ function renderProductCard(product: Product): string {
     : '<div style="width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; font-size: 48px;">📦</div>';
 
   return `
-    <a href="/products/${product.numericId}" class="product-card" style="text-decoration: none; color: inherit;">
+    <a href="/products/${product.id}" class="product-card" style="text-decoration: none; color: inherit;">
       <div class="product-image">${productImage}</div>
       <div class="product-info">
         <h3 class="product-name">${product.name}</h3>

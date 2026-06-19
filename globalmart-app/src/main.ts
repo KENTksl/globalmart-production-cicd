@@ -15,7 +15,8 @@ const router = new Navigo('/');
 function parseQueryParams(queryString: string): Record<string, string> {
   const params: Record<string, string> = {};
   if (!queryString) return params;
-  const pairs = queryString.split('&');
+  const normalizedQuery = queryString.startsWith('?') ? queryString.slice(1) : queryString;
+  const pairs = normalizedQuery.split('&');
   for (const pair of pairs) {
     const [key, value] = pair.split('=');
     if (key) {

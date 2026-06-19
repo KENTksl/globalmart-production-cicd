@@ -86,12 +86,22 @@ export async function renderCategoriesPage(container: HTMLElement) {
 }
 
 function renderCategories(container: HTMLElement, categories: Category[]) {
+  if (categories.length === 0) {
+    container.innerHTML = `
+      <div class="alert">
+        Chưa có danh mục nào trong database.
+      </div>
+    `;
+    return;
+  }
+
   container.innerHTML = categories.map(category => {
     const icon = categoryIcons[category.name] || '📦';
     return `
-      <a href="/products?category=${category._id}" class="glass-card category-card" data-nav style="text-decoration: none; color: inherit;">
+      <a href="/products?category=${encodeURIComponent(category.id)}" class="glass-card category-card" data-nav style="text-decoration: none; color: inherit;">
         <span>${icon}</span>
         <h4>${category.name}</h4>
+        <p class="category-card__desc">${category.description}</p>
       </a>
     `;
   }).join('');

@@ -2,17 +2,16 @@ const API_BASE_URL = 'http://localhost:8080';
 
 
 export interface Product {
-  _id?: string;
-  numericId: number;
+  id: number;
   name: string;
   description: string;
   price: number;
   image?: string;
-  categoryId?: string;
+  categoryId?: string | number;
 }
 
 export interface Category {
-  _id?: string;
+  id: string;
   numericId: number;
   name: string;
   description: string;
@@ -36,29 +35,53 @@ export interface LoginData {
   password: string;
 }
 
+function normalizeProduct(raw: any): Product {
+  return {
+    id: Number(raw.numericId ?? raw.id),
+    name: raw.name ?? '',
+    description: raw.description ?? '',
+    price: Number(raw.price ?? 0),
+    image: raw.image ?? '',
+    categoryId: raw.categoryId,
+  };
+}
+
+function normalizeCategory(raw: any): Category {
+  return {
+    id: String(raw.id ?? raw._id ?? ''),
+    numericId: Number(raw.numericId ?? 0),
+    name: raw.name ?? '',
+    description: raw.description ?? '',
+  };
+}
+
 export const api = {
   async getProducts(): Promise<Product[]> {
     const response = await fetch(`${API_BASE_URL}/products`);
     if (!response.ok) throw new Error('Failed to fetch products');
-    return response.json();
+    const data = await response.json();
+    return data.map(normalizeProduct);
   },
 
-  async getProduct(numericId: number): Promise<Product> {
-    const response = await fetch(`${API_BASE_URL}/products/${numericId}`);
+  async getProduct(id: number): Promise<Product> {
+    const response = await fetch(`${API_BASE_URL}/products/${id}`);
     if (!response.ok) throw new Error('Failed to fetch product');
-    return response.json();
+    const data = await response.json();
+    return normalizeProduct(data);
   },
 
   async getCategories(): Promise<Category[]> {
     const response = await fetch(`${API_BASE_URL}/categories`);
     if (!response.ok) throw new Error('Failed to fetch categories');
-    return response.json();
+    const data = await response.json();
+    return data.map(normalizeCategory);
   },
 
   async getProductsByCategory(categoryId: string): Promise<Product[]> {
     const response = await fetch(`${API_BASE_URL}/categories/${categoryId}/products`);
     if (!response.ok) throw new Error('Failed to fetch products');
-    return response.json();
+    const data = await response.json();
+    return data.map(normalizeProduct);
   },
 
   async register(data: RegisterData): Promise<User> {
