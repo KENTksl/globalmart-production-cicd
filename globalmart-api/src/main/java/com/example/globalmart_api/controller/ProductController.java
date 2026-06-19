@@ -31,27 +31,21 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> getProductById(@PathVariable long id) {
-        return productRepository.findByNumericId(id)
+    public ResponseEntity<Map<String, Object>> getProductById(@PathVariable Long id) {
+        return productRepository.findById(id)
                 .map(product -> ResponseEntity.ok(convertToResponse(product)))
                 .orElse(ResponseEntity.notFound().build());
     }
 
     private Map<String, Object> convertToResponse(Product product) {
-        long categoryNumericId = 0;
-        if (product.getCategoryId() != null) {
-            Category category = categoryRepository.findById(product.getCategoryId()).orElse(null);
-            if (category != null) {
-                categoryNumericId = category.getNumericId();
-            }
-        }
+        Long categoryId = product.getCategoryId();
         return Map.of(
-                "id", product.getNumericId(),
+                "id", product.getId(),
                 "name", product.getName(),
                 "description", product.getDescription(),
                 "price", product.getPrice(),
                 "image", product.getImage() != null ? product.getImage() : "",
-                "categoryId", categoryNumericId
+                "categoryId", categoryId != null ? categoryId : 0
         );
     }
 }

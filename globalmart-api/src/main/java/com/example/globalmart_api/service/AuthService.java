@@ -10,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.atomic.AtomicLong;
-
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -19,7 +17,6 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
-    private final AtomicLong userIdCounter = new AtomicLong(1);
 
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
@@ -33,11 +30,10 @@ public class AuthService {
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setNumericId(userIdCounter.getAndIncrement());
         user = userRepository.save(user);
 
         String token = jwtUtil.generateToken(user.getUsername(), user.getId());
-        AuthResponse.UserDto userDto = new AuthResponse.UserDto(user.getNumericId(), user.getUsername(), user.getEmail());
+        AuthResponse.UserDto userDto = new AuthResponse.UserDto(user.getId(), user.getUsername(), user.getEmail());
         return new AuthResponse(token, userDto);
     }
 
@@ -50,7 +46,7 @@ public class AuthService {
         }
 
         String token = jwtUtil.generateToken(user.getUsername(), user.getId());
-        AuthResponse.UserDto userDto = new AuthResponse.UserDto(user.getNumericId(), user.getUsername(), user.getEmail());
+        AuthResponse.UserDto userDto = new AuthResponse.UserDto(user.getId(), user.getUsername(), user.getEmail());
         return new AuthResponse(token, userDto);
     }
 }

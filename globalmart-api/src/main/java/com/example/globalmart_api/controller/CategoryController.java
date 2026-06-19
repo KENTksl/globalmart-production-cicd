@@ -30,12 +30,12 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public Category getCategoryById(@PathVariable String id) {
+    public Category getCategoryById(@PathVariable Long id) {
         return categoryRepository.findById(id).orElse(null);
     }
 
     @GetMapping("/{id}/products")
-    public List<com.example.globalmart_api.model.Product> getProductsByCategoryId(@PathVariable String id) {
+    public List<com.example.globalmart_api.model.Product> getProductsByCategoryId(@PathVariable Long id) {
         return productRepository.findByCategoryId(id);
     }
 }
