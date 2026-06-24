@@ -4,8 +4,8 @@
   "requiresCompatibilities": ["FARGATE"],
   "cpu": "256",
   "memory": "512",
-  "executionRoleArn": "arn:aws:iam::878311411295:role/globalmart-ecs-task-execution-role",
-  "taskRoleArn": "arn:aws:iam::878311411295:role/globalmart-ecs-task-execution-role",
+  "executionRoleArn": "arn:aws:iam::ACCOUNT_ID:role/globalmart-ecs-task-execution-role",
+  "taskRoleArn": "arn:aws:iam::ACCOUNT_ID:role/globalmart-ecs-task-execution-role",
   "containerDefinitions": [
     {
       "name": "frontend",

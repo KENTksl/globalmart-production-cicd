@@ -1,0 +1,21 @@
+# Terraform state — KHÔNG commit lên GitHub
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# Biến nhạy cảm — KHÔNG commit
+terraform.tfvars
+*.auto.tfvars
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+crash.log

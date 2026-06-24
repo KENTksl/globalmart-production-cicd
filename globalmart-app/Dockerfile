@@ -24,8 +24,13 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # Copy Nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Expose port 80
-EXPOSE 80
+# Copy entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Expose port 3000 (as per Terraform config)
+EXPOSE 3000
+
+# Use entrypoint script
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+

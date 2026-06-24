@@ -1,0 +1,14 @@
+output "cluster_name"                 { value = aws_ecs_cluster.main.name }
+output "cluster_arn"                  { value = aws_ecs_cluster.main.arn }
+output "frontend_service_name"        { value = aws_ecs_service.frontend.name }
+output "backend_service_name"         { value = aws_ecs_service.backend.name }
+output "alb_public_dns"               { value = aws_lb.public.dns_name }
+output "alb_internal_dns"             { value = aws_lb.internal.dns_name }
+output "alb_public_arn_suffix"        { value = aws_lb.public.arn_suffix }
+output "alb_public_listener_arn"      { value = aws_lb_listener.public_http.arn }
+output "alb_public_test_listener_arn" { value = aws_lb_listener.public_test.arn }
+output "tg_frontend_blue_arn"         { value = aws_lb_target_group.frontend_blue.arn }
+output "tg_frontend_green_arn"        { value = aws_lb_target_group.frontend_green.arn }
+output "tg_backend_arn"               { value = aws_lb_target_group.backend.arn }
+output "frontend_task_def_arn"        { value = aws_ecs_task_definition.frontend.arn }
+output "backend_task_def_arn"         { value = aws_ecs_task_definition.backend.arn }

@@ -1,0 +1,13 @@
+variable "project"                { type = string }
+variable "environment"            { type = string }
+variable "aws_region"             { type = string }
+variable "vpc_id"                 { type = string }
+variable "subnet_ids"             { type = list(string) } # cả 2 AZ
+variable "sg_rds_id"              { type = string }
+variable "sg_rds_proxy_id"        { type = string }       # MỚI v2
+variable "db_name"                { type = string }
+variable "db_username"            { type = string }
+variable "db_instance_class"      { type = string }
+variable "db_allocated_storage"   { type = number }
+variable "backup_retention_period"{ type = number }
+variable "backup_window"          { type = string }

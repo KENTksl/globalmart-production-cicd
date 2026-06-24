@@ -1,7 +1,8 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  server: {
-    historyApiFallback: true,
+  preview: {
+    port: 4173,
   },
+  envPrefix: 'VITE_',
 });

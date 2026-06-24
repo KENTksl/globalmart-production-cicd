@@ -15,7 +15,7 @@ phases:
     commands:
       # Login vào ECR
       - echo "=== Logging in to Amazon ECR ==="
-      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $(echo $ECR_FRONTEND_URL | cut -d'/' -f1)
+      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_FRONTEND_URL
 
       # Lấy commit hash để tag image (7 ký tự đầu)
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
@@ -30,10 +30,10 @@ phases:
   build:
     commands:
       - echo "=== Building Frontend Docker Image ==="
-      - docker build -t $ECR_FRONTEND_URL:$IMAGE_TAG -t $ECR_FRONTEND_URL:latest ./globalmart-app
+      - docker build -t $ECR_FRONTEND_URL:$IMAGE_TAG -t $ECR_FRONTEND_URL:latest ./frontend
 
       - echo "=== Building Backend Docker Image ==="
-      - docker build -t $ECR_BACKEND_URL:$IMAGE_TAG -t $ECR_BACKEND_URL:latest ./globalmart-api
+      - docker build -t $ECR_BACKEND_URL:$IMAGE_TAG -t $ECR_BACKEND_URL:latest ./backend
 
   post_build:
     commands:

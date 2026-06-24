@@ -1,0 +1,32 @@
+aws_region  = "ap-southeast-1"
+project     = "globalmart"
+environment = "production"
+
+# GitHub
+github_owner          = "your-github-username"
+github_repo           = "globalmart"
+github_branch         = "main"
+github_connection_arn = "arn:aws:codeconnections:ap-southeast-1:878311411295:connection/41001097-b5f3-4589-97dd-af576a7aeead"
+
+# Networking Multi-AZ
+vpc_cidr               = "10.0.0.0/16"
+availability_zones     = ["ap-southeast-1a", "ap-southeast-1b"]
+public_subnet_cidrs    = ["10.0.1.0/24",  "10.0.2.0/24"]   # Public A + B
+private_subnet_cidrs   = ["10.0.11.0/24", "10.0.12.0/24"]  # Private A (ECS FE + RDS Primary) + B (ECS BE + RDS Standby)
+
+# ECS
+frontend_port          = 3000
+backend_port           = 8080
+frontend_desired_count = 2
+backend_desired_count  = 2
+
+# RDS Multi-AZ
+db_name                 = "globalmart"
+db_username             = "admin"
+db_instance_class       = "db.t3.micro"
+db_allocated_storage    = 20
+backup_retention_period = 7
+backup_window           = "18:00-19:00"
+
+# Monitoring
+alert_email = "your-email@example.com"
