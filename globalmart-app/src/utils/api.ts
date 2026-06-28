@@ -1,5 +1,4 @@
-const API_BASE_URL = 'http://localhost:8080';
-
+const API_BASE_URL = 'https://17b78kv71g.execute-api.ap-southeast-1.amazonaws.com';
 export interface Product {
   id: number;
   name: string;
