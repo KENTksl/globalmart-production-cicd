@@ -10,6 +10,7 @@ import { renderLoginPage } from './user/pages/LoginPage';
 import { renderRegisterPage } from './user/pages/RegisterPage';
 import { renderCartPage } from './user/pages/CartPage';
 import { renderCheckoutPage } from './user/pages/CheckoutPage';
+import { renderUserProfilePage } from './user/pages/UserProfilePage';
 import { renderAdminDashboardPage } from './admin/pages/AdminDashboardPage';
 import { renderAdminProductsPage } from './admin/pages/AdminProductsPage';
 import { renderAdminCategoriesPage } from './admin/pages/AdminCategoriesPage';
@@ -81,6 +82,12 @@ router.on('/register', () => {
 router.on('/cart', () => {
   renderChrome();
   renderCartPage(app);
+});
+
+router.on('/profile', () => {
+  if (!requireAuth()) return;
+  renderChrome();
+  renderUserProfilePage(app);
 });
 
 router.on('/checkout', () => {

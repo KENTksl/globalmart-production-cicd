@@ -23,6 +23,7 @@ export function renderUserNavbar(container: HTMLElement) {
           <li><a href="/products" data-nav>Sản phẩm</a></li>
           <li><a href="/cart" data-nav>Giỏ hàng <span class="cart-badge">${cartCount}</span></a></li>
           ${currentUser ? '<li><a href="/admin" data-nav>Quản trị</a></li>' : ''}
+          ${currentUser ? `<li><a href="/profile" data-nav>Hồ sơ</a></li>` : ''}
           ${currentUser
             ? `<li><a href="/logout" id="logout-link">Đăng xuất (${currentUser.username})</a></li>`
             : '<li><a href="/login" data-nav>Đăng nhập</a></li>'

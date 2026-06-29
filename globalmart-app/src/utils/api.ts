@@ -255,6 +255,13 @@ export const api = {
     return payload;
   },
 
+  async getMe(): Promise<User> {
+    const data = await request<any>('/auth/me', {}, true);
+    const user = normalizeUser(data);
+    localStorage.setItem('user', JSON.stringify(user));
+    return user;
+  },
+
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
