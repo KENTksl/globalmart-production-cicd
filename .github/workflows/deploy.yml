@@ -6,8 +6,8 @@ on:
 
 env:
   AWS_REGION: ap-southeast-1
-  ECR_FRONTEND: 307257806722.dkr.ecr.ap-southeast-1.amazonaws.com/globalmart/frontend
-  ECR_BACKEND: 307257806722.dkr.ecr.ap-southeast-1.amazonaws.com/globalmart/backend
+  ECR_FRONTEND: 307257806722.dkr.ecr.ap-southeast-1.amazonaws.com/globalmart-frontend
+  ECR_BACKEND: 307257806722.dkr.ecr.ap-southeast-1.amazonaws.com/globalmart-backend
   ECS_CLUSTER: globalmart-cluster
   ECS_SERVICE_FRONTEND: globalmart-frontend-task
   ECS_SERVICE_BACKEND: globalmart-backend-task
