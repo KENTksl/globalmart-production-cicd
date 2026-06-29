@@ -19,7 +19,7 @@ export async function renderAdminDashboardPage(container: HTMLElement) {
     content.innerHTML = `
       <div class="admin-stats-grid">
         <article class="glass-card admin-stat-card">
-          <span>Tổng sản phẩm Khôi nè</span>
+          <span>Tổng sản phẩm Khôi</span>
           <strong>${stats.totalProducts}</strong>
         </article>
         <article class="glass-card admin-stat-card">
