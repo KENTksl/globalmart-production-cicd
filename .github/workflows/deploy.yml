@@ -1,0 +1,90 @@
+name: Build and Deploy to ECS
+
+on:
+  push:
+    branches: [main]
+
+env:
+  AWS_REGION: ap-southeast-1
+  ECR_FRONTEND: 307257806722.dkr.ecr.ap-southeast-1.amazonaws.com/globalmart/frontend
+  ECR_BACKEND: 307257806722.dkr.ecr.ap-southeast-1.amazonaws.com/globalmart/backend
+  ECS_CLUSTER: globalmart-cluster
+  ECS_SERVICE_FRONTEND: globalmart-frontend-task
+  ECS_SERVICE_BACKEND: globalmart-backend-task
+
+jobs:
+  deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Configure AWS credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      # 3. Login ECR
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      # 4. Build + Push Frontend
+      - name: Build and push Frontend image
+        run: |
+          IMAGE_TAG=${{ github.sha }}
+          docker build -t $ECR_FRONTEND:$IMAGE_TAG -t $ECR_FRONTEND:latest ./globalmart-app
+          docker push $ECR_FRONTEND:$IMAGE_TAG
+          docker push $ECR_FRONTEND:latest
+          echo "FRONTEND_IMAGE=$ECR_FRONTEND:$IMAGE_TAG" >> $GITHUB_ENV
+
+      # 5. Build + Push Backend
+      - name: Build and push Backend image
+        run: |
+          IMAGE_TAG=${{ github.sha }}
+          docker build -t $ECR_BACKEND:$IMAGE_TAG -t $ECR_BACKEND:latest ./globalmart-api
+          docker push $ECR_BACKEND:$IMAGE_TAG
+          docker push $ECR_BACKEND:latest
+          echo "BACKEND_IMAGE=$ECR_BACKEND:$IMAGE_TAG" >> $GITHUB_ENV
+
+      # 6. Deploy Frontend lên ECS
+      - name: Deploy Frontend to ECS
+        run: |
+          aws ecs update-service \
+            --cluster $ECS_CLUSTER \
+            --service $ECS_SERVICE_FRONTEND \
+            --force-new-deployment \
+            --region $AWS_REGION
+
+      # 7. Deploy Backend lên ECS
+      - name: Deploy Backend to ECS
+        run: |
+          aws ecs update-service \
+            --cluster $ECS_CLUSTER \
+            --service $ECS_SERVICE_BACKEND \
+            --force-new-deployment \
+            --region $AWS_REGION
+
+      # 8. Đợi Frontend stable
+      - name: Wait for Frontend deployment
+        run: |
+          aws ecs wait services-stable \
+            --cluster $ECS_CLUSTER \
+            --services $ECS_SERVICE_FRONTEND \
+            --region $AWS_REGION
+          echo "Frontend deployed successfully!"
+
+      # 9. Đợi Backend stable
+      - name: Wait for Backend deployment
+        run: |
+          aws ecs wait services-stable \
+            --cluster $ECS_CLUSTER \
+            --services $ECS_SERVICE_BACKEND \
+            --region $AWS_REGION
+          echo "Backend deployed successfully!"
