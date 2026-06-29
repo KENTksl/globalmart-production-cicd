@@ -160,4 +160,10 @@ window.addEventListener('cart:updated', () => {
   }
 });
 
+window.addEventListener('user:updated', () => {
+  if (!window.location.pathname.startsWith('/admin')) {
+    renderChrome();
+  }
+});
+
 router.resolve();

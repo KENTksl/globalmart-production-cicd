@@ -145,6 +145,11 @@ async function request<T>(path: string, init: RequestInit = {}, requiresAuth = f
   return response.json() as Promise<T>;
 }
 
+export interface UpdateUserData {
+  username?: string;
+  password?: string;
+}
+
 export const api = {
   async getProducts(): Promise<Product[]> {
     const data = await request<any[]>('/products');
@@ -258,6 +263,16 @@ export const api = {
   async getMe(): Promise<User> {
     const data = await request<any>('/auth/me', {}, true);
     const user = normalizeUser(data);
+    localStorage.setItem('user', JSON.stringify(user));
+    return user;
+  },
+
+  async updateMe(data: UpdateUserData): Promise<User> {
+    const result = await request<any>('/auth/me', {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    }, true);
+    const user = normalizeUser(result);
     localStorage.setItem('user', JSON.stringify(user));
     return user;
   },
