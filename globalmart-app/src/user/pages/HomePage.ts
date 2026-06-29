@@ -11,7 +11,7 @@ export async function renderHomePage(container: HTMLElement) {
     <section class="hero hero-template">
       <div class="container hero-template__layout">
         <div class="hero-content hero-template__content">
-          <span class="eyebrow">Sàn thương mại toàn cầu</span>
+          <span class="eyebrow">Sàn thương mại toàn cầu khoi nè</span>
           <h1>Mua sắm hiện đại cùng Global Mart</h1>
           <p>
             Khám phá danh mục, sản phẩm và giỏ hàng với giao diện hiện đại,
