@@ -18,11 +18,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout code
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Configure AWS credentials
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -30,51 +28,85 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      # 3. Login ECR
       - name: Login to Amazon ECR
-        id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      # 4. Build + Push Frontend
-      - name: Build and push Frontend image
+      - name: Build and push Frontend
         run: |
           IMAGE_TAG=${{ github.sha }}
           docker build -t $ECR_FRONTEND:$IMAGE_TAG -t $ECR_FRONTEND:latest ./globalmart-app
           docker push $ECR_FRONTEND:$IMAGE_TAG
           docker push $ECR_FRONTEND:latest
-          echo "FRONTEND_IMAGE=$ECR_FRONTEND:$IMAGE_TAG" >> $GITHUB_ENV
 
-      # 5. Build + Push Backend
-      - name: Build and push Backend image
+      - name: Build and push Backend
         run: |
           IMAGE_TAG=${{ github.sha }}
           docker build -t $ECR_BACKEND:$IMAGE_TAG -t $ECR_BACKEND:latest ./globalmart-api
           docker push $ECR_BACKEND:$IMAGE_TAG
           docker push $ECR_BACKEND:latest
-          echo "BACKEND_IMAGE=$ECR_BACKEND:$IMAGE_TAG" >> $GITHUB_ENV
 
-      # 6. Deploy Frontend lên ECS
       - name: Deploy Frontend to ECS
         run: |
+          IMAGE_TAG=${{ github.sha }}
+          TASK_DEF=$(aws ecs describe-task-definition \
+            --task-definition globalmart-frontend-task \
+            --region $AWS_REGION \
+            --query 'taskDefinition' \
+            --output json)
+          NEW_TASK_DEF=$(echo $TASK_DEF | python3 -c "
+          import json, sys
+          td = json.load(sys.stdin)
+          for c in td['containerDefinitions']:
+              c['image'] = '$ECR_FRONTEND:$IMAGE_TAG'
+          for key in ['taskDefinitionArn','revision','status','requiresAttributes','compatibilities','registeredAt','registeredBy']:
+              td.pop(key, None)
+          print(json.dumps(td))
+          ")
+          NEW_TASK_ARN=$(aws ecs register-task-definition \
+            --region $AWS_REGION \
+            --cli-input-json "$NEW_TASK_DEF" \
+            --query 'taskDefinition.taskDefinitionArn' \
+            --output text)
           aws ecs update-service \
             --cluster $ECS_CLUSTER \
             --service $ECS_SERVICE_FRONTEND \
+            --task-definition $NEW_TASK_ARN \
             --force-new-deployment \
             --region $AWS_REGION
+          echo "Frontend deployed: $IMAGE_TAG"
 
-      # 7. Deploy Backend lên ECS
       - name: Deploy Backend to ECS
         run: |
+          IMAGE_TAG=${{ github.sha }}
+          TASK_DEF=$(aws ecs describe-task-definition \
+            --task-definition globalmart-backend-task \
+            --region $AWS_REGION \
+            --query 'taskDefinition' \
+            --output json)
+          NEW_TASK_DEF=$(echo $TASK_DEF | python3 -c "
+          import json, sys
+          td = json.load(sys.stdin)
+          for c in td['containerDefinitions']:
+              c['image'] = '$ECR_BACKEND:$IMAGE_TAG'
+          for key in ['taskDefinitionArn','revision','status','requiresAttributes','compatibilities','registeredAt','registeredBy']:
+              td.pop(key, None)
+          print(json.dumps(td))
+          ")
+          NEW_TASK_ARN=$(aws ecs register-task-definition \
+            --region $AWS_REGION \
+            --cli-input-json "$NEW_TASK_DEF" \
+            --query 'taskDefinition.taskDefinitionArn' \
+            --output text)
           aws ecs update-service \
             --cluster $ECS_CLUSTER \
             --service $ECS_SERVICE_BACKEND \
+            --task-definition $NEW_TASK_ARN \
             --force-new-deployment \
             --region $AWS_REGION
+          echo "Backend deployed: $IMAGE_TAG"
 
       - name: Deployment complete
         run: |
-          echo "Images pushed to ECR"
-          echo "ECS services update triggered"
-          echo "Frontend image: $ECR_FRONTEND:${{ github.sha }}"
-          echo "Backend image: $ECR_BACKEND:${{ github.sha }}"
-          echo "Monitor deployment at AWS ECS Console"
+          echo "Deploy triggered successfully"
+          echo "Image tag: ${{ github.sha }}"
+          echo "Check ECS Console in 2-3 minutes"
