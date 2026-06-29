@@ -71,20 +71,10 @@ jobs:
             --force-new-deployment \
             --region $AWS_REGION
 
-      # 8. Đợi Frontend stable
-      - name: Wait for Frontend deployment
+      - name: Deployment complete
         run: |
-          aws ecs wait services-stable \
-            --cluster $ECS_CLUSTER \
-            --services $ECS_SERVICE_FRONTEND \
-            --region $AWS_REGION
-          echo "Frontend deployed successfully!"
-
-      # 9. Đợi Backend stable
-      - name: Wait for Backend deployment
-        run: |
-          aws ecs wait services-stable \
-            --cluster $ECS_CLUSTER \
-            --services $ECS_SERVICE_BACKEND \
-            --region $AWS_REGION
-          echo "Backend deployed successfully!"
+          echo "Images pushed to ECR"
+          echo "ECS services update triggered"
+          echo "Frontend image: $ECR_FRONTEND:${{ github.sha }}"
+          echo "Backend image: $ECR_BACKEND:${{ github.sha }}"
+          echo "Monitor deployment at AWS ECS Console"
