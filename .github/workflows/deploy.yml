@@ -117,25 +117,6 @@ jobs:
           aws sns publish \
             --topic-arn arn:aws:sns:ap-southeast-1:307257806722:globalmart-alerts \
             --subject "GlobalMart Deploy SUCCESS" \
-            --message "Deploy thành công!
-                Repository: ${{ github.repository }}
-                Branch: ${{ github.ref_name }}
-                Commit: ${{ github.sha }}
-                Commit message: ${{ github.event.head_commit.message }}
-                Author: ${{ github.event.head_commit.author.name }}
-                Thời gian: $(date '+%Y-%m-%d %H:%M:%S %Z')
-                
-                Frontend image: $ECR_FRONTEND:${{ github.sha }}
-                Backend image: $ECR_BACKEND:${{ github.sha }}
-
-                Xem chi tiết: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
-                            --region ap-southeast-1
-      - name: Notify Success via SNS
-        if: success()
-        run: |
-          aws sns publish \
-            --topic-arn arn:aws:sns:ap-southeast-1:307257806722:globalmart-alerts \
-            --subject "GlobalMart Deploy SUCCESS" \
             --message "
               ========================================
                  GLOBALMART DEPLOY - SUCCESS
