@@ -10,12 +10,12 @@ permissions:
 
 env:
   AWS_REGION: ap-southeast-1
-  ECR_FRONTEND: 071370395847.dkr.ecr.ap-southeast-1.amazonaws.com/globalmart-frontend
-  ECR_BACKEND: 071370395847.dkr.ecr.ap-southeast-1.amazonaws.com/globalmart-backend
+  ECR_FRONTEND: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-southeast-1.amazonaws.com/globalmart-frontend
+  ECR_BACKEND: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-southeast-1.amazonaws.com/globalmart-backend
   ECS_CLUSTER: globalmart-cluster
   ECS_SERVICE_FRONTEND: globalmart-frontend-service
   ECS_SERVICE_BACKEND: globalmart-backend-service
-  SNS_TOPIC_ARN: arn:aws:sns:ap-southeast-1:071370395847:globalmart-alerts
+  SNS_TOPIC_ARN: arn:aws:sns:ap-southeast-1:${{ secrets.AWS_ACCOUNT_ID }}:globalmart-alerts
 
 jobs:
   deploy:
@@ -31,6 +31,7 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
+          audience: sts.amazonaws.com
 
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
@@ -104,16 +105,15 @@ jobs:
             --topic-arn $SNS_TOPIC_ARN \
             --subject "GlobalMart Deploy SUCCESS" \
             --message "Deploy thanh cong!
-              Repository: ${{ github.repository }}
-              Branch: ${{ github.ref_name }}
-              Commit: ${{ github.sha }}
-              Message: ${{ github.event.head_commit.message }}
-              Author: ${{ github.event.head_commit.author.name }}
-              Thoi gian: $(date '+%Y-%m-%d %H:%M:%S UTC')
-              
-              Xem chi tiet:
-              ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
-                          --region $AWS_REGION
+          Repository: ${{ github.repository }}
+          Branch: ${{ github.ref_name }}
+          Commit: ${{ github.sha }}
+          Message: ${{ github.event.head_commit.message }}
+          Author: ${{ github.event.head_commit.author.name }}
+          Thoi gian: $(date '+%Y-%m-%d %H:%M:%S UTC')
+          Xem chi tiet: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            --region $AWS_REGION
+
       - name: Notify Failure via SNS
         if: failure()
         run: |
@@ -121,13 +121,11 @@ jobs:
             --topic-arn $SNS_TOPIC_ARN \
             --subject "GlobalMart Deploy FAILED" \
             --message "Deploy THAT BAI! Can kiem tra ngay
-              Repository: ${{ github.repository }}
-              Branch: ${{ github.ref_name }}
-              Commit: ${{ github.sha }}
-              Message: ${{ github.event.head_commit.message }}
-              Author: ${{ github.event.head_commit.author.name }}
-              Thoi gian: $(date '+%Y-%m-%d %H:%M:%S UTC')
-              
-              Xem loi tai:
-              ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
-                          --region $AWS_REGION
+          Repository: ${{ github.repository }}
+          Branch: ${{ github.ref_name }}
+          Commit: ${{ github.sha }}
+          Message: ${{ github.event.head_commit.message }}
+          Author: ${{ github.event.head_commit.author.name }}
+          Thoi gian: $(date '+%Y-%m-%d %H:%M:%S UTC')
+          Xem loi tai: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            --region $AWS_REGION
