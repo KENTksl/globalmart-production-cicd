@@ -1,4 +1,5 @@
-const API_BASE_URL = 'https://17b78kv71g.execute-api.ap-southeast-1.amazonaws.com';
+const API_BASE_URL = 'https://43s4cr8zt0.execute-api.ap-southeast-1.amazonaws.com';
+
 export interface Product {
   id: number;
   name: string;
