@@ -4,7 +4,7 @@ import { renderAdminLayout } from '../components/AdminLayout';
 
 export async function renderAdminDashboardPage(container: HTMLElement) {
   container.innerHTML = renderAdminLayout(
-    'Biểu đồ thống kê sản phẩm',
+    'Biểu đồ thống ',
     `
       <div id="admin-dashboard-content" class="admin-panel">
         <p>Đang tải thống kê...</p>
@@ -19,7 +19,7 @@ export async function renderAdminDashboardPage(container: HTMLElement) {
     content.innerHTML = `
       <div class="admin-stats-grid">
         <article class="glass-card admin-stat-card">
-          <span>Tổng sản phẩm Khôi</span>
+          <span>Tổng sản phẩm </span>
           <strong>${stats.totalProducts}</strong>
         </article>
         <article class="glass-card admin-stat-card">
