@@ -4,7 +4,7 @@ import { renderAdminLayout } from '../components/AdminLayout';
 
 export async function renderAdminDashboardPage(container: HTMLElement) {
   container.innerHTML = renderAdminLayout(
-    'Biểu đồ thống theo tháng',
+    'Biểu đồ thống theo năm',
     `
       <div id="admin-dashboard-content" class="admin-panel">
         <p>Đang tải thống kê...</p>
