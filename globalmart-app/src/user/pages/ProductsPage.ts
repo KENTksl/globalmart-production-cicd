@@ -18,7 +18,7 @@ export async function renderProductsPage(container: HTMLElement, queryParams: Re
           <div id="products-filter" class="chip-group"></div>
         </div>
         <div class="search-container" style="margin-bottom: 24px;">
-          <div class="search-box" style="position: relative; max-width: 500px;">
+          <div class="search-box" style="position: relative; max-width: 500px; margin-bottom: 16px;">
             <input 
               type="text" 
               id="search-input" 
@@ -27,6 +27,7 @@ export async function renderProductsPage(container: HTMLElement, queryParams: Re
             >
             <span style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); font-size: 20px;">🔍</span>
           </div>
+          <div id="price-filter" class="chip-group"></div>
         </div>
         <div id="products-container" class="products">
           <p style="text-align: center; width: 100%;">Đang tải sản phẩm...</p>
@@ -42,7 +43,28 @@ export async function renderProductsPage(container: HTMLElement, queryParams: Re
 
   const productsContainer = document.getElementById('products-container')!;
   const filterContainer = document.getElementById('products-filter')!;
+  const priceFilterContainer = document.getElementById('price-filter')!;
   const searchInput = document.getElementById('search-input') as HTMLInputElement;
+
+  let state = {
+    search: '',
+    minPrice: undefined as number | undefined,
+    maxPrice: undefined as number | undefined
+  };
+
+  const updateProducts = async () => {
+    try {
+      console.log('updateProducts called with state:', state);
+      const products = queryParams.category 
+        ? await api.getProductsByCategory(queryParams.category, state.search || undefined, state.minPrice, state.maxPrice) 
+        : await api.getProducts(state.search || undefined, state.minPrice, state.maxPrice);
+      console.log('Products received:', products);
+      renderProducts(productsContainer, products);
+      bindAddToCart(container);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   try {
     const [categories, products] = await Promise.all([
@@ -51,9 +73,10 @@ export async function renderProductsPage(container: HTMLElement, queryParams: Re
     ]);
 
     renderCategoryFilters(filterContainer, categories, queryParams.category);
+    renderPriceFilters(priceFilterContainer, state, updateProducts);
     renderProducts(productsContainer, products);
     bindAddToCart(container);
-    bindSearch(searchInput, productsContainer, queryParams.category);
+    bindSearch(searchInput, updateProducts, state);
   } catch {
     productsContainer.innerHTML = `
       <div class="alert alert-error">
@@ -63,23 +86,45 @@ export async function renderProductsPage(container: HTMLElement, queryParams: Re
   }
 }
 
-function bindSearch(input: HTMLInputElement, container: HTMLElement, categoryId?: string) {
+function bindSearch(input: HTMLInputElement, updateProducts: () => Promise<void>, state: any) {
   const searchHandler = debounce(async (searchTerm: string) => {
-    try {
-      const products = categoryId 
-        ? await api.getProductsByCategory(categoryId, searchTerm) 
-        : await api.getProducts(searchTerm);
-      renderProducts(container, products);
-      bindAddToCart(container.parentElement!);
-    } catch (error) {
-      console.error('Search error:', error);
-    }
+    state.search = searchTerm;
+    await updateProducts();
   }, 300);
 
   input.addEventListener('input', (e) => {
     const target = e.target as HTMLInputElement;
     searchHandler(target.value);
   });
+}
+
+function renderPriceFilters(container: HTMLElement, state: any, updateProducts: () => Promise<void>) {
+  const priceRanges = [
+    { label: 'Dưới 10tr', min: undefined, max: 10000000 },
+    { label: '10tr - 15tr', min: 10000000, max: 15000000 },
+    { label: '15tr - 20tr', min: 15000000, max: 20000000 },
+    { label: 'Trên 20tr', min: 20000000, max: undefined },
+    { label: 'Tất cả', min: undefined, max: undefined }
+  ];
+
+  const render = () => {
+    container.innerHTML = priceRanges.map((range) => `
+      <button class="chip ${(state.minPrice === range.min && state.maxPrice === range.max) ? 'chip--active' : ''}" data-min="${range.min ?? ''}" data-max="${range.max ?? ''}">
+        ${range.label}
+      </button>
+    `).join('');
+
+    container.querySelectorAll('button').forEach(button => {
+      button.addEventListener('click', async () => {
+        state.minPrice = (button.dataset.min && button.dataset.min !== '') ? Number(button.dataset.min) : undefined;
+        state.maxPrice = (button.dataset.max && button.dataset.max !== '') ? Number(button.dataset.max) : undefined;
+        render();
+        await updateProducts();
+      });
+    });
+  };
+
+  render();
 }
 
 function debounce(func: (...args: any[]) => any, wait: number) {

@@ -17,4 +17,25 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p WHERE p.categoryId = :categoryId AND (LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(p.description) LIKE LOWER(CONCAT('%', :keyword, '%')))")
     List<Product> searchProductsByCategory(@Param("categoryId") Long categoryId, @Param("keyword") String keyword);
+
+    @Query("SELECT p FROM Product p WHERE " +
+           "(:keyword IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(p.description) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
+           "AND (:minPrice IS NULL OR p.price >= :minPrice) " +
+           "AND (:maxPrice IS NULL OR p.price <= :maxPrice)")
+    List<Product> findProductsWithFilters(
+        @Param("keyword") String keyword,
+        @Param("minPrice") Double minPrice,
+        @Param("maxPrice") Double maxPrice
+    );
+
+    @Query("SELECT p FROM Product p WHERE p.categoryId = :categoryId " +
+           "AND (:keyword IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(p.description) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
+           "AND (:minPrice IS NULL OR p.price >= :minPrice) " +
+           "AND (:maxPrice IS NULL OR p.price <= :maxPrice)")
+    List<Product> findProductsByCategoryWithFilters(
+        @Param("categoryId") Long categoryId,
+        @Param("keyword") String keyword,
+        @Param("minPrice") Double minPrice,
+        @Param("maxPrice") Double maxPrice
+    );
 }

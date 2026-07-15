@@ -7,6 +7,7 @@ import com.example.globalmart_api.repository.CategoryRepository;
 import com.example.globalmart_api.repository.ProductRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 @RequestMapping("/products")
 @RequiredArgsConstructor
@@ -24,13 +26,17 @@ public class ProductController {
     private final CategoryRepository categoryRepository;
 
     @GetMapping
-    public ResponseEntity<List<Map<String, Object>>> getAllProducts(@RequestParam(required = false) String search) {
+    public ResponseEntity<List<Map<String, Object>>> getAllProducts(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice
+    ) {
+        log.info("getAllProducts called with search={}, minPrice={}, maxPrice={}", search, minPrice, maxPrice);
         List<Product> products;
-        if (search != null && !search.trim().isEmpty()) {
-            products = productRepository.searchProducts(search.trim());
-        } else {
-            products = productRepository.findAll();
-        }
+        String keyword = (search != null && !search.trim().isEmpty()) ? search.trim() : null;
+        products = productRepository.findProductsWithFilters(keyword, minPrice, maxPrice);
+        log.info("Found {} products", products.size());
+        products.forEach(product -> log.info("Product: {}, price: {}", product.getName(), product.getPrice()));
         List<Map<String, Object>> response = products.stream()
                 .map(this::convertToResponse)
                 .collect(Collectors.toList());

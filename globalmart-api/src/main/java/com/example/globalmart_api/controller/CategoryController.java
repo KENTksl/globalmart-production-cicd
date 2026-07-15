@@ -6,6 +6,7 @@ import com.example.globalmart_api.model.Product;
 import com.example.globalmart_api.repository.CategoryRepository;
 import com.example.globalmart_api.repository.ProductRepository;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 @RequestMapping("/categories")
 @CrossOrigin(origins = "http://localhost:5173")
@@ -52,14 +54,16 @@ public class CategoryController {
     @GetMapping("/{id}/products")
     public List<Map<String, Object>> getProductsByCategoryId(
             @PathVariable Long id,
-            @RequestParam(required = false) String search
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice
     ) {
+        log.info("getProductsByCategoryId called with id={}, search={}, minPrice={}, maxPrice={}", id, search, minPrice, maxPrice);
         List<Product> products;
-        if (search != null && !search.trim().isEmpty()) {
-            products = productRepository.searchProductsByCategory(id, search.trim());
-        } else {
-            products = productRepository.findByCategoryId(id);
-        }
+        String keyword = (search != null && !search.trim().isEmpty()) ? search.trim() : null;
+        products = productRepository.findProductsByCategoryWithFilters(id, keyword, minPrice, maxPrice);
+        log.info("Found {} products", products.size());
+        products.forEach(product -> log.info("Product: {}, price: {}", product.getName(), product.getPrice()));
         return products.stream()
                 .map(product -> Map.<String, Object>of(
                         "id", product.getId(),

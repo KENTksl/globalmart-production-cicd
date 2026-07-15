@@ -152,8 +152,13 @@ export interface UpdateUserData {
 }
 
 export const api = {
-  async getProducts(search?: string): Promise<Product[]> {
-    const url = search ? `/products?search=${encodeURIComponent(search)}` : '/products';
+  async getProducts(search?: string, minPrice?: number, maxPrice?: number): Promise<Product[]> {
+    const params = new URLSearchParams();
+    if (search) params.set('search', search);
+    if (minPrice !== undefined) params.set('minPrice', String(minPrice));
+    if (maxPrice !== undefined) params.set('maxPrice', String(maxPrice));
+    const url = params.toString() ? `/products?${params.toString()}` : '/products';
+    console.log('Calling getProducts with URL:', url);
     const data = await request<any[]>(url);
     return data.map(normalizeProduct);
   },
@@ -229,10 +234,15 @@ export const api = {
     await request<void>(`/categories/${id}`, { method: 'DELETE' }, true);
   },
 
-  async getProductsByCategory(categoryId: string | number, search?: string): Promise<Product[]> {
-    const url = search 
-      ? `/categories/${categoryId}/products?search=${encodeURIComponent(search)}` 
+  async getProductsByCategory(categoryId: string | number, search?: string, minPrice?: number, maxPrice?: number): Promise<Product[]> {
+    const params = new URLSearchParams();
+    if (search) params.set('search', search);
+    if (minPrice !== undefined) params.set('minPrice', String(minPrice));
+    if (maxPrice !== undefined) params.set('maxPrice', String(maxPrice));
+    const url = params.toString() 
+      ? `/categories/${categoryId}/products?${params.toString()}` 
       : `/categories/${categoryId}/products`;
+    console.log('Calling getProductsByCategory with URL:', url);
     const data = await request<any[]>(url);
     return data.map(normalizeProduct);
   },

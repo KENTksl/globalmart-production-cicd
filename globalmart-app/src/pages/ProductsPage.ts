@@ -1,4 +1,4 @@
-import { api, Product } from '../utils/api';
+import { api, Product, Category } from '../utils/api';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -7,20 +7,29 @@ gsap.registerPlugin(ScrollTrigger);
 export async function renderProductsPage(container: HTMLElement, queryParams: Record<string, string> = {}) {
   container.innerHTML = `
     <section class="section">
-      <h2 class="section-title">${queryParams.category ? 'Sản phẩm theo danh mục' : 'Sản phẩm nổi bật'}</h2>
-      <div class="search-container" style="margin-bottom: 24px;">
-        <div class="search-box" style="position: relative; max-width: 500px;">
-          <input 
-            type="text" 
-            id="search-input" 
-            placeholder="Tìm kiếm sản phẩm..." 
-            style="width: 100%; padding: 12px 48px 12px 16px; border: 2px solid #e0e0e0; border-radius: 12px; font-size: 16px; transition: border-color 0.3s; outline: none;"
-          >
-          <span style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); font-size: 20px;">🔍</span>
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title section-title--left">${queryParams.category ? 'Sản phẩm theo danh mục' : 'Tất cả sản phẩm'}</h2>
+            <p class="section-subtitle">Khám phá các sản phẩm phù hợp với nhu cầu của bạn.</p>
+          </div>
+          <div id="products-filter" class="chip-group"></div>
         </div>
-      </div>
-      <div id="products-container" class="products">
-        <p style="text-align: center; width: 100%;">Đang tải sản phẩm...</p>
+        <div class="search-container" style="margin-bottom: 24px;">
+          <div class="search-box" style="position: relative; max-width: 500px; margin-bottom: 16px;">
+            <input 
+              type="text" 
+              id="search-input" 
+              placeholder="Tìm kiếm sản phẩm..." 
+              style="width: 100%; padding: 12px 48px 12px 16px; border: 2px solid #e0e0e0; border-radius: 12px; font-size: 16px; transition: border-color 0.3s; outline: none;"
+            >
+            <span style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); font-size: 20px;">🔍</span>
+          </div>
+          <div id="price-filter" class="chip-group"></div>
+        </div>
+        <div id="products-container" class="products">
+          <p style="text-align: center; width: 100%;">Đang tải sản phẩm...</p>
+        </div>
       </div>
     </section>
 
@@ -31,17 +40,37 @@ export async function renderProductsPage(container: HTMLElement, queryParams: Re
   `;
 
   const productsContainer = document.getElementById('products-container')!;
+  const filterContainer = document.getElementById('products-filter')!;
+  const priceFilterContainer = document.getElementById('price-filter')!;
   const searchInput = document.getElementById('search-input') as HTMLInputElement;
-  
-  try {
-    let products: Product[];
-    if (queryParams.category) {
-      products = await api.getProductsByCategory(queryParams.category);
-    } else {
-      products = await api.getProducts();
+
+  let state = {
+    search: '',
+    minPrice: undefined as number | undefined,
+    maxPrice: undefined as number | undefined
+  };
+
+  const updateProducts = async () => {
+    try {
+      const products = queryParams.category 
+        ? await api.getProductsByCategory(queryParams.category, state.search || undefined, state.minPrice, state.maxPrice) 
+        : await api.getProducts(state.search || undefined, state.minPrice, state.maxPrice);
+      renderProducts(productsContainer, products);
+    } catch (error) {
+      console.error('Error:', error);
     }
+  };
+
+  try {
+    const [categories, products] = await Promise.all([
+      api.getCategories(),
+      queryParams.category ? api.getProductsByCategory(queryParams.category) : api.getProducts(),
+    ]);
+
+    renderCategoryFilters(filterContainer, categories, queryParams.category);
+    renderPriceFilters(priceFilterContainer, state, updateProducts);
     renderProducts(productsContainer, products);
-    bindSearch(searchInput, productsContainer, queryParams.category);
+    bindSearch(searchInput, updateProducts, state);
   } catch (error) {
     productsContainer.innerHTML = `
       <div class="alert alert-error">
@@ -51,22 +80,64 @@ export async function renderProductsPage(container: HTMLElement, queryParams: Re
   }
 }
 
-function bindSearch(input: HTMLInputElement, container: HTMLElement, categoryId?: string) {
+function bindSearch(input: HTMLInputElement, updateProducts: () => Promise<void>, state: any) {
   const searchHandler = debounce(async (searchTerm: string) => {
-    try {
-      const products = categoryId 
-        ? await api.getProductsByCategory(categoryId, searchTerm) 
-        : await api.getProducts(searchTerm);
-      renderProducts(container, products);
-    } catch (error) {
-      console.error('Search error:', error);
-    }
+    state.search = searchTerm;
+    await updateProducts();
   }, 300);
 
   input.addEventListener('input', (e) => {
     const target = e.target as HTMLInputElement;
     searchHandler(target.value);
   });
+}
+
+function renderCategoryFilters(container: HTMLElement, categories: Category[], activeCategory?: string) {
+  container.innerHTML = `
+    <a href="/products" class="chip ${!activeCategory ? 'chip--active' : ''}" data-nav>Tất cả</a>
+    ${categories
+      .map(
+        (category) => `
+          <a
+            href="/products?category=${category.id}"
+            class="chip ${String(category.id) === activeCategory ? 'chip--active' : ''}"
+            data-nav
+          >
+            ${category.name}
+          </a>
+        `
+      )
+      .join('')}
+  `;
+}
+
+function renderPriceFilters(container: HTMLElement, state: any, updateProducts: () => Promise<void>) {
+  const priceRanges = [
+    { label: 'Dưới 10tr', min: undefined, max: 10000000 },
+    { label: '10tr - 15tr', min: 10000000, max: 15000000 },
+    { label: '15tr - 20tr', min: 15000000, max: 20000000 },
+    { label: 'Trên 20tr', min: 20000000, max: undefined },
+    { label: 'Tất cả', min: undefined, max: undefined }
+  ];
+
+  const render = () => {
+    container.innerHTML = priceRanges.map((range) => `
+      <button class="chip ${(state.minPrice === range.min && state.maxPrice === range.max) ? 'chip--active' : ''}" data-min="${range.min ?? ''}" data-max="${range.max ?? ''}">
+        ${range.label}
+      </button>
+    `).join('');
+
+    container.querySelectorAll('button').forEach(button => {
+      button.addEventListener('click', async () => {
+        state.minPrice = (button.dataset.min && button.dataset.min !== '') ? Number(button.dataset.min) : undefined;
+        state.maxPrice = (button.dataset.max && button.dataset.max !== '') ? Number(button.dataset.max) : undefined;
+        render();
+        await updateProducts();
+      });
+    });
+  };
+
+  render();
 }
 
 function debounce(func: (...args: any[]) => any, wait: number) {
