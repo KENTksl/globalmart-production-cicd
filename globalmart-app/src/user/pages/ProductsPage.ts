@@ -6,8 +6,6 @@ import { formatCurrency } from '../../utils/format';
 
 gsap.registerPlugin(ScrollTrigger);
 
-let currentProducts: Product[] = [];
-
 export async function renderProductsPage(container: HTMLElement, queryParams: Record<string, string> = {}) {
   container.innerHTML = `
     <section class="section">
@@ -52,7 +50,6 @@ export async function renderProductsPage(container: HTMLElement, queryParams: Re
       queryParams.category ? api.getProductsByCategory(queryParams.category) : api.getProducts(),
     ]);
 
-    currentProducts = products;
     renderCategoryFilters(filterContainer, categories, queryParams.category);
     renderProducts(productsContainer, products);
     bindAddToCart(container);
@@ -72,7 +69,6 @@ function bindSearch(input: HTMLInputElement, container: HTMLElement, categoryId?
       const products = categoryId 
         ? await api.getProductsByCategory(categoryId, searchTerm) 
         : await api.getProducts(searchTerm);
-      currentProducts = products;
       renderProducts(container, products);
       bindAddToCart(container.parentElement!);
     } catch (error) {
