@@ -73,7 +73,7 @@ function debounce(func: (...args: any[]) => any, wait: number) {
   let timeoutId: number;
   return (...args: any[]) => {
     clearTimeout(timeoutId);
-    timeoutId = window.setTimeout(() => func.apply(null, ...args), wait);
+    timeoutId = window.setTimeout(() => func.apply(null, args), wait);
   };
 }
 
