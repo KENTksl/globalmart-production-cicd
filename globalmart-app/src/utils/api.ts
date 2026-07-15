@@ -152,8 +152,9 @@ export interface UpdateUserData {
 }
 
 export const api = {
-  async getProducts(): Promise<Product[]> {
-    const data = await request<any[]>('/products');
+  async getProducts(search?: string): Promise<Product[]> {
+    const url = search ? `/products?search=${encodeURIComponent(search)}` : '/products';
+    const data = await request<any[]>(url);
     return data.map(normalizeProduct);
   },
 
@@ -228,8 +229,11 @@ export const api = {
     await request<void>(`/categories/${id}`, { method: 'DELETE' }, true);
   },
 
-  async getProductsByCategory(categoryId: string | number): Promise<Product[]> {
-    const data = await request<any[]>(`/categories/${categoryId}/products`);
+  async getProductsByCategory(categoryId: string | number, search?: string): Promise<Product[]> {
+    const url = search 
+      ? `/categories/${categoryId}/products?search=${encodeURIComponent(search)}` 
+      : `/categories/${categoryId}/products`;
+    const data = await request<any[]>(url);
     return data.map(normalizeProduct);
   },
 

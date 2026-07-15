@@ -24,8 +24,13 @@ public class ProductController {
     private final CategoryRepository categoryRepository;
 
     @GetMapping
-    public ResponseEntity<List<Map<String, Object>>> getAllProducts() {
-        List<Product> products = productRepository.findAll();
+    public ResponseEntity<List<Map<String, Object>>> getAllProducts(@RequestParam(required = false) String search) {
+        List<Product> products;
+        if (search != null && !search.trim().isEmpty()) {
+            products = productRepository.searchProducts(search.trim());
+        } else {
+            products = productRepository.findAll();
+        }
         List<Map<String, Object>> response = products.stream()
                 .map(this::convertToResponse)
                 .collect(Collectors.toList());

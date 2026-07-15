@@ -49,8 +49,17 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}/products")
-    public List<Map<String, Object>> getProductsByCategoryId(@PathVariable Long id) {
-        return productRepository.findByCategoryId(id).stream()
+    public List<Map<String, Object>> getProductsByCategoryId(
+            @PathVariable Long id,
+            @RequestParam(required = false) String search
+    ) {
+        List<Product> products;
+        if (search != null && !search.trim().isEmpty()) {
+            products = productRepository.searchProductsByCategory(id, search.trim());
+        } else {
+            products = productRepository.findByCategoryId(id);
+        }
+        return products.stream()
                 .map(product -> Map.<String, Object>of(
                         "id", product.getId(),
                         "name", product.getName(),

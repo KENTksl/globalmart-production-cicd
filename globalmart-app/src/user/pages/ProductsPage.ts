@@ -6,6 +6,8 @@ import { formatCurrency } from '../../utils/format';
 
 gsap.registerPlugin(ScrollTrigger);
 
+let currentProducts: Product[] = [];
+
 export async function renderProductsPage(container: HTMLElement, queryParams: Record<string, string> = {}) {
   container.innerHTML = `
     <section class="section">
@@ -16,6 +18,17 @@ export async function renderProductsPage(container: HTMLElement, queryParams: Re
             <p class="section-subtitle">Khám phá các sản phẩm phù hợp với nhu cầu của bạn.</p>
           </div>
           <div id="products-filter" class="chip-group"></div>
+        </div>
+        <div class="search-container" style="margin-bottom: 24px;">
+          <div class="search-box" style="position: relative; max-width: 500px;">
+            <input 
+              type="text" 
+              id="search-input" 
+              placeholder="Tìm kiếm sản phẩm..." 
+              style="width: 100%; padding: 12px 48px 12px 16px; border: 2px solid #e0e0e0; border-radius: 12px; font-size: 16px; transition: border-color 0.3s; outline: none;"
+            >
+            <span style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); font-size: 20px;">🔍</span>
+          </div>
         </div>
         <div id="products-container" class="products">
           <p style="text-align: center; width: 100%;">Đang tải sản phẩm...</p>
@@ -31,6 +44,7 @@ export async function renderProductsPage(container: HTMLElement, queryParams: Re
 
   const productsContainer = document.getElementById('products-container')!;
   const filterContainer = document.getElementById('products-filter')!;
+  const searchInput = document.getElementById('search-input') as HTMLInputElement;
 
   try {
     const [categories, products] = await Promise.all([
@@ -38,9 +52,11 @@ export async function renderProductsPage(container: HTMLElement, queryParams: Re
       queryParams.category ? api.getProductsByCategory(queryParams.category) : api.getProducts(),
     ]);
 
+    currentProducts = products;
     renderCategoryFilters(filterContainer, categories, queryParams.category);
     renderProducts(productsContainer, products);
     bindAddToCart(container);
+    bindSearch(searchInput, productsContainer, queryParams.category);
   } catch {
     productsContainer.innerHTML = `
       <div class="alert alert-error">
@@ -48,6 +64,34 @@ export async function renderProductsPage(container: HTMLElement, queryParams: Re
       </div>
     `;
   }
+}
+
+function bindSearch(input: HTMLInputElement, container: HTMLElement, categoryId?: string) {
+  const searchHandler = debounce(async (searchTerm: string) => {
+    try {
+      const products = categoryId 
+        ? await api.getProductsByCategory(categoryId, searchTerm) 
+        : await api.getProducts(searchTerm);
+      currentProducts = products;
+      renderProducts(container, products);
+      bindAddToCart(container.parentElement!);
+    } catch (error) {
+      console.error('Search error:', error);
+    }
+  }, 300);
+
+  input.addEventListener('input', (e) => {
+    const target = e.target as HTMLInputElement;
+    searchHandler(target.value);
+  });
+}
+
+function debounce(func: (...args: any[]) => any, wait: number) {
+  let timeoutId: number;
+  return (...args: any[]) => {
+    clearTimeout(timeoutId);
+    timeoutId = window.setTimeout(() => func.apply(null, ...args), wait);
+  };
 }
 
 function renderCategoryFilters(container: HTMLElement, categories: Category[], activeCategory?: string) {
